@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>트위터 완전 청소기</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1DA1F2">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+            padding: 10px;
+            font-size: 16px; /* 모바일 기본 폰트 크기 */
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+            color: white;
+            padding: 0 10px;
+        }
+        
+        .header h1 {
+            font-size: 1.8em;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .badge {
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .function-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .function-box {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            min-height: auto;
+        }
+        
+        .function-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: inherit;
+            opacity: 0.9;
+            z-index: 1;
+        }
+        
+        .function-content {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .tweets-delete {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+        }
+        
+        .likes-cancel {
+            background: linear-gradient(135deg, #e91e63 0%, #ad1457 100%);
+        }
+        
+        .retweets-remove {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+        
+        .quotes-delete {
+            background: linear-gradient(135deg, #9c27b0 0%, #7b1fa2 100%);
+        }
+        
+        .function-box h3 {
+            font-size: 1.2em;
+            margin-bottom: 8px;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        
+        .function-box p {
+            margin-bottom: 15px;
+            opacity: 0.9;
+            line-height: 1.4;
+            font-size: 0.9em;
+        }
+        
+        .bookmarklet-code {
+            background: rgba(255,255,255,0.2);
+            padding: 10px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 0.65em;
+            margin: 10px 0;
+            word-break: break-all;
+            border: 2px dashed rgba(255,255,255,0.5);
+            color: white;
+            font-weight: bold;
+            max-height: 80px;
+            overflow-y: auto;
+            line-height: 1.2;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .copy-btn {
+            background: rgba(255,255,255,0.9);
+            color: #333;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            width: 100%;
+            margin-top: 5px;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        
+        .copy-btn:hover {
+            background: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .instructions {
+            background: #f0f8ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border-left: 4px solid #1DA1F2;
+        }
+        
+        .instructions h3 {
+            color: #1DA1F2;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+        
+        .steps {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 12px;
+            margin: 15px 0;
+        }
+        
+        .step {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+            border-left: 3px solid #4CAF50;
+        }
+        
+        .step h4 {
+            color: #2e7d32;
+            margin-bottom: 8px;
+            font-size: 1em;
+        }
+        
+        .step ul {
+            margin-left: 15px;
+            color: #555;
+        }
+        
+        .step li {
+            margin: 6px 0;
+            line-height: 1.3;
+            font-size: 0.9em;
+        }
+        
+        .warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+        
+        .warning h3 {
+            color: #856404;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        .warning ul {
+            margin-left: 15px;
+            color: #856404;
+        }
+        
+        .warning li {
+            margin: 8px 0;
+            line-height: 1.4;
+            font-weight: 500;
+            font-size: 0.9em;
+        }
+        
+        .tips {
+            background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%);
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+        }
+        
+        .tips h3 {
+            color: #2e7d32;
+            margin-bottom: 12px;
+            font-size: 1.1em;
+        }
+        
+        .tip-item {
+            background: white;
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+            border-left: 3px solid #4CAF50;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        
+        .tip-item strong {
+            color: #2e7d32;
+        }
+        
+        .install-prompt {
+            background: linear-gradient(45deg, #43a047, #66bb6a);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+            display: none;
+            box-shadow: 0 4px 15px rgba(67, 160, 71, 0.3);
+        }
+        
+        .status {
+            text-align: center;
+            padding: 12px;
+            border-radius: 8px;
+            margin: 15px 0;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+        
+        .success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .info {
+            background: #cce7ff;
+            color: #004085;
+            border: 1px solid #b8daff;
+        }
+        
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        @media (max-width: 600px) {
+            body {
+                padding: 5px;
+                font-size: 14px;
+            }
+            
+            .header h1 {
+                font-size: 1.6em;
+            }
+            
+            .function-box h3 {
+                font-size: 1.1em;
+            }
+            
+            .bookmarklet-code {
+                font-size: 0.6em;
+                max-height: 70px;
+                padding: 8px;
+            }
+            
+            .copy-btn {
+                padding: 10px 15px;
+                font-size: 0.8em;
+            }
+            
+            .card {
+                padding: 12px;
+                margin-bottom: 12px;
+            }
+            
+            .function-box {
+                padding: 15px;
+            }
+            
+            .instructions, .tips, .warning {
+                padding: 15px;
+            }
+            
+            .tip-item, .step {
+                padding: 10px;
+                font-size: 0.85em;
+            }
+        }
+        
+        @media (max-width: 400px) {
+            .header h1 {
+                font-size: 1.4em;
+            }
+            
+            .bookmarklet-code {
+                font-size: 0.55em;
+                max-height: 60px;
+            }
+            
+            .copy-btn {
+                padding: 8px 12px;
+                font-size: 0.75em;
+            }
+        }
+        
+        /* 터치 친화적 스타일 */
+        .copy-btn:active, .copy-btn:focus {
+            outline: none;
+            transform: scale(0.98);
+            background: white;
+        }
+        
+        /* 스크롤 최적화 */
+        .bookmarklet-code::-webkit-scrollbar {
+            width: 3px;
+        }
+        
+        .bookmarklet-code::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+        }
+        
+        .bookmarklet-code::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.5);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🧹 트위터 완전 청소기</h1>
+            <div class="badge">🚀 4가지 강력한 기능</div>
+            <p>내가 원하는 것만 골라서 깔끔하게 정리하세요!</p>
+        </div>
+        
+        <div class="install-prompt" id="installPrompt">
+            📱 홈 화면에 앱으로 설치하세요!
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border: 2px solid #f44336; margin-bottom: 20px;">
+            <div style="text-align: center; padding: 15px;">
+                <h2 style="color: #d32f2f; margin-bottom: 12px; font-size: 1.3em;">⚠️ 주의사항</h2>
+                <p style="font-size: 1em; color: #c62828; font-weight: bold; line-height: 1.5; margin-bottom: 10px;">
+                    아직 <strong>개발단계</strong>이므로 실사용은 아직 불가합니다
+                </p>
+                <p style="font-size: 0.9em; color: #b71c1c; font-weight: 500; line-height: 1.4;">
+                    사용으로 인한 손해는 <strong>책임지지 않습니다</strong>
+                </p>
+                <div style="background: white; padding: 10px; border-radius: 8px; margin-top: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                    <p style="color: #666; margin: 0; font-size: 0.85em;">
+                        🚧 테스트 목적으로만 사용하시고, 중요한 데이터 백업을 권장합니다
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: 2px solid #1976d2;">
+            <div style="text-align: center; padding: 20px;">
+                <h2 style="color: #1976d2; margin-bottom: 15px;">📱 모바일 사용자 필독!</h2>
+                <p style="font-size: 1.1em; color: #1565c0; font-weight: bold; line-height: 1.6;">
+                    모바일에서는 <strong>북마크를 즐겨찾기에 추가</strong>한 후,<br>
+                    해당 트위터 페이지에서 <strong>즐겨찾기를 터치</strong>해서 실행하세요!
+                </p>
+                <div style="background: white; padding: 15px; border-radius: 10px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="color: #333; margin: 0;">
+                        <strong>📌 순서:</strong> 코드 복사 → 즐겨찾기 추가 → 트위터 페이지 이동 → 즐겨찾기 터치 → 실행!
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">🎯 원하는 기능을 선택하세요</h2>
+            
+            <div class="function-grid">
+                <div class="function-box tweets-delete">
+                    <div class="function-content">
+                        <h3>🗑️ 내 트윗 삭제</h3>
+                        <p>내가 작성한 모든 트윗을 안전하게 삭제합니다</p>
+                        
+                        <div class="bookmarklet-code" id="tweetsCode">
+javascript:(function(){let count=0;const tweets=document.querySelectorAll('[data-testid="tweet"]');if(tweets.length===0){alert('트윗을 찾을 수 없습니다. 트위터 프로필 페이지로 이동해주세요.');return;}const myTweets=Array.from(tweets).filter(tweet=>{const retweetIcon=tweet.querySelector('[data-testid="retweet"]');const quoteIcon=tweet.querySelector('[data-testid="quote"]');return !retweetIcon?.getAttribute('aria-label')?.includes('리트윗 취소') && !quoteIcon;});if(myTweets.length===0){alert('삭제할 트윗을 찾을 수 없습니다.');return;}if(!confirm('내가 쓴 트윗 '+myTweets.length+'개를 삭제하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;myTweets.forEach((tweet,i)=>{setTimeout(()=>{try{const moreBtn=tweet.querySelector('[aria-label="More"]')||tweet.querySelector('[aria-label="더보기"]');if(moreBtn){moreBtn.click();setTimeout(()=>{const deleteBtn=Array.from(document.querySelectorAll('[role="menuitem"]')).find(btn=>btn.textContent.includes('Delete')||btn.textContent.includes('삭제'));if(deleteBtn){deleteBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="confirmationSheetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('✅ 트윗 삭제: '+processed+'/'+myTweets.length);if(processed===myTweets.length){alert('🎉 내 트윗 삭제 완료!\\n삭제된 트윗: '+processed+'개');}}},1000);}},1000);}}catch(e){console.error('❌ 에러:',e);}},i*2500);});alert('🚀 내 트윗 삭제 시작!\\n총 '+myTweets.length+'개 처리 예정');})();
+                        </div>
+                        
+                        <button class="copy-btn" onclick="copyCode('tweetsCode', this)">
+                            📋 트윗 삭제 코드 복사
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="function-box likes-cancel">
+                    <div class="function-content">
+                        <h3>❤️ 좋아요 취소</h3>
+                        <p>내가 누른 모든 좋아요를 한 번에 취소합니다</p>
+                        
+                        <div class="bookmarklet-code" id="likesCode">
+javascript:(function(){let count=0;const likeButtons=document.querySelectorAll('[data-testid="like"]');const activeLikes=Array.from(likeButtons).filter(btn=>btn.getAttribute('aria-label')?.includes('좋아요 취소')||btn.querySelector('svg')?.style?.color==='rgb(249, 24, 128)');if(activeLikes.length===0){alert('취소할 좋아요를 찾을 수 없습니다.\\n좋아요 목록 페이지에서 실행해주세요.');return;}if(!confirm('좋아요 '+activeLikes.length+'개를 모두 취소하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;activeLikes.forEach((likeBtn,i)=>{setTimeout(()=>{try{if(likeBtn.getAttribute('aria-label')?.includes('좋아요 취소')||likeBtn.querySelector('svg')?.style?.color==='rgb(249, 24, 128)'){likeBtn.click();processed++;console.log('💔 좋아요 취소: '+processed+'/'+activeLikes.length);if(processed===activeLikes.length){alert('🎉 좋아요 취소 완료!\\n취소된 좋아요: '+processed+'개');}}}catch(e){console.error('❌ 에러:',e);}},i*1500);});alert('💔 좋아요 취소 시작!\\n총 '+activeLikes.length+'개 처리 예정');})();
+                        </div>
+                        
+                        <button class="copy-btn" onclick="copyCode('likesCode', this)">
+                            💔 좋아요 취소 코드 복사
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="function-box retweets-remove">
+                    <div class="function-content">
+                        <h3>🔄 리트윗 취소</h3>
+                        <p>내가 리트윗한 모든 게시물을 취소합니다</p>
+                        
+                        <div class="bookmarklet-code" id="retweetsCode">
+javascript:(function(){let count=0;const retweetButtons=document.querySelectorAll('[data-testid="retweet"]');const activeRetweets=Array.from(retweetButtons).filter(btn=>btn.getAttribute('aria-label')?.includes('리트윗 취소')||btn.querySelector('svg')?.style?.color==='rgb(0, 186, 124)');if(activeRetweets.length===0){alert('취소할 리트윗을 찾을 수 없습니다.\\n프로필 페이지에서 실행해주세요.');return;}if(!confirm('리트윗 '+activeRetweets.length+'개를 모두 취소하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;activeRetweets.forEach((retweetBtn,i)=>{setTimeout(()=>{try{if(retweetBtn.getAttribute('aria-label')?.includes('리트윗 취소')||retweetBtn.querySelector('svg')?.style?.color==='rgb(0, 186, 124)'){retweetBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="unretweetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('🔄 리트윗 취소: '+processed+'/'+activeRetweets.length);if(processed===activeRetweets.length){alert('🎉 리트윗 취소 완료!\\n취소된 리트윗: '+processed+'개');}}},800);}}catch(e){console.error('❌ 에러:',e);}},i*2000);});alert('🔄 리트윗 취소 시작!\\n총 '+activeRetweets.length+'개 처리 예정');})();
+                        </div>
+                        
+                        <button class="copy-btn" onclick="copyCode('retweetsCode', this)">
+                            🔄 리트윗 취소 코드 복사
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="function-box quotes-delete">
+                    <div class="function-content">
+                        <h3>💬 인용트윗 삭제</h3>
+                        <p>내가 작성한 인용트윗을 모두 삭제합니다</p>
+                        
+                        <div class="bookmarklet-code" id="quotesCode">
+javascript:(function(){let count=0;const tweets=document.querySelectorAll('[data-testid="tweet"]');const quoteTweets=Array.from(tweets).filter(tweet=>{const quotedTweet=tweet.querySelector('[role="link"]');const hasQuoteStructure=tweet.textContent.length>0&&quotedTweet&&tweet.querySelector('[data-testid="User-Name"]');return hasQuoteStructure;});if(quoteTweets.length===0){alert('삭제할 인용트윗을 찾을 수 없습니다.\\n프로필 페이지에서 실행해주세요.');return;}if(!confirm('인용트윗 '+quoteTweets.length+'개를 삭제하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;quoteTweets.forEach((tweet,i)=>{setTimeout(()=>{try{const moreBtn=tweet.querySelector('[aria-label="More"]')||tweet.querySelector('[aria-label="더보기"]');if(moreBtn){moreBtn.click();setTimeout(()=>{const deleteBtn=Array.from(document.querySelectorAll('[role="menuitem"]')).find(btn=>btn.textContent.includes('Delete')||btn.textContent.includes('삭제'));if(deleteBtn){deleteBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="confirmationSheetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('💬 인용트윗 삭제: '+processed+'/'+quoteTweets.length);if(processed===quoteTweets.length){alert('🎉 인용트윗 삭제 완료!\\n삭제된 인용트윗: '+processed+'개');}}},1000);}},1000);}}catch(e){console.error('❌ 에러:',e);}},i*2500);});alert('💬 인용트윗 삭제 시작!\\n총 '+quoteTweets.length+'개 처리 예정');})();
+                        </div>
+                        
+                        <button class="copy-btn" onclick="copyCode('quotesCode', this)">
+                            💬 인용트윗 삭제 코드 복사
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card">
+            <div class="instructions">
+                <h3>📖 사용 방법 가이드</h3>
+                
+                <div class="steps">
+                    <div class="step">
+                        <h4>1️⃣ 코드 복사</h4>
+                        <ul>
+                            <li>원하는 기능의 코드 복사 버튼 클릭</li>
+                            <li>자동으로 클립보드에 복사됨</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>2️⃣ 북마크 생성</h4>
+                        <ul>
+                            <li>브라우저 북마크바 우클릭</li>
+                            <li>"새 북마크 추가" 선택</li>
+                            <li>이름: 기능명 입력</li>
+                            <li>URL: 복사한 코드 붙여넣기</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>3️⃣ 해당 페이지 이동</h4>
+                        <ul>
+                            <li><strong>트윗 삭제:</strong> 내 프로필</li>
+                            <li><strong>좋아요 취소:</strong> 좋아요 목록</li>
+                            <li><strong>리트윗 취소:</strong> 내 프로필</li>
+                            <li><strong>인용트윗 삭제:</strong> 내 프로필</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>4️⃣ 북마클릿 실행</h4>
+                        <ul>
+                            <li>생성한 북마크 클릭</li>
+                            <li>확인 창에서 "확인" 선택</li>
+                            <li>자동 처리 진행 확인</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="tips">
+            <h3>💡 전문가 팁</h3>
+            
+            <div class="tip-item">
+                <strong>📍 올바른 페이지에서 실행:</strong> 각 기능은 해당하는 트위터 페이지에서만 작동합니다. 좋아요 취소는 좋아요 목록에서, 트윗 삭제는 프로필에서 실행하세요.
+            </div>
+            
+            <div class="tip-item">
+                <strong>🔍 진행상황 확인:</strong> F12 키를 눌러 개발자 도구를 열고 Console 탭에서 실시간으로 진행상황을 확인할 수 있습니다.
+            </div>
+            
+            <div class="tip-item">
+                <strong>⏸️ 중도 중단:</strong> 작업을 중단하려면 페이지를 새로고침(F5)하거나 다른 페이지로 이동하세요.
+            </div>
+            
+            <div class="tip-item">
+                <strong>🌐 WiFi 권장:</strong> 대량의 데이터를 처리하므로 안정적인 WiFi 환경에서 사용하시기 바랍니다.
+            </div>
+        </div>
+        
+        <div class="warning">
+            <h3>⚠️ 중요한 주의사항</h3>
+            <ul>
+                <li><strong>되돌릴 수 없음:</strong> 모든 삭제/취소 작업은 영구적이며 복구할 수 없습니다</li>
+                <li><strong>계정 안전:</strong> 너무 빠른 대량 작업은 일시적인 계정 제재를 받을 수 있습니다</li>
+                <li><strong>백업 권장:</strong> 중요한 데이터는 미리 백업해 두시기 바랍니다</li>
+                <li><strong>책임 소재:</strong> 본 도구 사용으로 발생하는 모든 결과는 사용자 책임입니다</li>
+                <li><strong>트위터 정책:</strong> 트위터 이용약관을 준수하며 사용하세요</li>
+            </ul>
+        </div>
+        
+        <div id="status" class="status info">
+            🎯 원하는 기능을 선택해서 북마클릿으로 만들어보세요!
+        </div>
+    </div>
+
+    <script>
+        // Service Worker 등록
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('./sw.js')
+                    .then(registration => {
+                        console.log('SW registered: ', registration);
+                    })
+                    .catch(registrationError => {
+                        console.log('SW registration failed: ', registrationError);
+                    });
+            });
+        }
+
+        // PWA 설치 프롬프트
+        let deferredPrompt;
+        const installPrompt = document.getElementById('installPrompt');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installPrompt.style.display = 'block';
+        });
+
+        installPrompt.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                console.log(`User response: ${outcome}`);
+                deferredPrompt = null;
+                installPrompt.style.display = 'none';
+            }
+        });
+
+        // 코드 복사 기능
+        function copyCode(codeId, buttonElement) {
+            const code = document.getElementById(codeId).textContent.trim();
+            
+            if (navigator.clipboard) {
+                navigator.clipboard.writeText(code).then(() => {
+                    showCopySuccess(buttonElement);
+                    updateStatus('✅ 북마클릿 코드가 복사되었습니다! 북마크로 저장하세요.', 'success');
+                }).catch(err => {
+                    console.error('복사 실패:', err);
+                    fallbackCopy(code, buttonElement);
+                });
+            } else {
+                fallbackCopy(code, buttonElement);
+            }
+        }
+
+        // 복사 성공 피드백
+        function showCopySuccess(button) {
+            const originalText = button.textContent;
+            const originalBg = button.style.background;
+            
+            button.textContent = '✅ 복사됨!';
+            button.style.background = '#4CAF50';
+            button.style.color = 'white';
+            
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = originalBg;
+                button.style.color = '#333';
+            }, 2000);
+        }
+
+        // 복사 대체 방법
+        function fallbackCopy(text, buttonElement) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '-999999px';
+            textArea.style.top = '-999999px';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+            
+            try {
+                document.execCommand('copy');
+                showCopySuccess(buttonElement);
+                updateStatus('✅ 북마클릿 코드가 복사되었습니다!', 'success');
+            } catch (err) {
+                updateStatus('❌ 복사에 실패했습니다. 코드를 수동으로 선택해서 복사해주세요.', 'error');
+            }
+            
+            document.body.removeChild(textArea);
+        }
+
+        // 상태 업데이트
+        function updateStatus(message, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = `status ${type}`;
+            
+            // 자동 페이드아웃
+            setTimeout(() => {
+                if (status.className.includes(type)) {
+                    status.className = 'status info';
+                    status.textContent = '🎯 원하는 기능을 선택해서 북마클릿으로 만들어보세요!';
+                }
+            }, 5000);
+        }
+
+        // 페이지 로드 시 초기화
+        window.addEventListener('load', () => {
+            // 모바일 감지
+            const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|
