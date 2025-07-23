@@ -372,6 +372,111 @@
         scrollCount++;
         console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
         
+        // 현재 화면에 있는 내 트윗들 찾기
+        const allTweets = document.querySelectorAll('[data-testid="tweet"]');
+        const myTweets = Array.from(allTweets).filter(tweet => {
+            const isRetweet = tweet.querySelector('[data-testid="socialContext"]') && 
+                             (tweet.innerText.includes("님이 리트윗") || tweet.innerText.includes("Retweeted"));
+            const isQuoteTweet = tweet.querySelector('[data-testid="quoteTweet"]');
+            
+            return !isRetweet && !isQuoteTweet && tweet.offsetParent !== null;
+        });
+        
+        if (myTweets.length > 0) {
+            console.log(`🗑️ 현재 화면에서 ${myTweets.length}개 내 트윗 발견!`);
+            
+            for (let j = 0; j < myTweets.length; j++) {
+                try {
+                    const tweet = myTweets[j];
+                    if (tweet && tweet.offsetParent !== null) {
+                        const moreBtn = tweet.querySelector('[aria-label="더보기"]') || tweet.querySelector('[aria-label="More"]');
+                        
+                        if (moreBtn) {
+                            moreBtn.click();
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            
+                            const deleteBtn = [...document.querySelectorAll('[role="menuitem"]')]
+                                .find(btn => btn.textContent.includes("삭제") || btn.textContent.includes("Delete"));
+                            
+                            if (deleteBtn) {
+                                deleteBtn.click();
+                                await new Promise(resolve => setTimeout(resolve, 800));
+                                
+                                const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
+                                if (confirmBtn) {
+                                    confirmBtn.click();
+                                    deletedCount++;
+                                    console.log(`🗑️ 내 트윗 삭제 완료: ${deletedCount}개 (최신부터)`);
+                                    await new Promise(resolve => setTimeout(resolve, 800));
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error("❌ 삭제 중 오류:", error);
+                }
+            }
+        }
+        
+        // 조금씩 아래로 스크롤
+        const currentHeight = window.scrollY;
+        window.scrollTo({top: currentHeight + window.innerHeight * 0.8, behavior: "smooth"});
+        await new Promise(resolve => setTimeout(resolve, 3500));
+        
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+            console.log("📜 페이지 끝에 도달했습니다.");
+            break;
+        }
+        
+        if (Math.abs(window.scrollY - previousHeight) < 50) {
+            console.log("📜 더 이상 스크롤할 수 없습니다.");
+            break;
+        }
+        previousHeight = window.scrollY;
+    }
+    
+    alert(`🎉 내 트윗 삭제 완료! (최신부터 순서대로)\n총 삭제된 트윗: ${deletedCount}개\n스크롤 횟수: ${scrollCount}회`);
+})();</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="warning">
+            <div class="warning-title">⚠️ 주의사항</div>
+            <div class="warning-text">
+                모든 작업은 되돌릴 수 없습니다. 실행 전 신중히 생각해보세요.<br>
+                대량 작업으로 인해 일시적으로 계정이 제한될 수 있습니다.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function copyCode(button, codeId) {
+            const codeElement = document.getElementById(codeId);
+            const text = codeElement.textContent;
+            
+            navigator.clipboard.writeText(text).then(() => {
+                const originalText = button.textContent;
+                button.textContent = '복사됨!';
+                button.classList.add('copied');
+                
+                setTimeout(() => {
+                    button.textContent = originalText;
+                    button.classList.remove('copied');
+                }, 2000);
+            }).catch(err => {
+                console.error('복사 실패:', err);
+                alert('복사에 실패했습니다. 수동으로 복사해주세요.');
+            });
+        }
+    </script>
+</body>
+</html>
+    
+    for (let i = 0; i < maxScrolls; i++) {
+        scrollCount++;
+        console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
+        
         // 현재 화면에 있는 답글들 찾기
         const allTweets = document.querySelectorAll('[data-testid="tweet"]');
         const replyTweets = Array.from(allTweets).filter(tweet => {
