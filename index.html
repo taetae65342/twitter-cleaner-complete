@@ -453,8 +453,18 @@
 javascript:(()=>{alert("🗑️ 트윗 삭제 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runDelete()}},interval);function runDelete(){let c=0;document.querySelectorAll('[data-testid="tweet"]').forEach((t,i)=>{setTimeout(()=>{try{let m=t.querySelector('[aria-label="더보기"]')||t.querySelector('[aria-label="More"]');m?.click();setTimeout(()=>{let d=[...document.querySelectorAll('[role="menuitem"]')].find(b=>b.textContent.includes("삭제")||b.textContent.includes("Delete"));d?.click();setTimeout(()=>{let y=document.querySelector('[data-testid="confirmationSheetConfirm"]');y?.click();c++;console.log(`✅ 삭제됨: ${c}`)},1000)},1000)}catch(e){console.log("❌",e)}},i*2500)})}});
                         </div>
                         
+                        <div style="margin: 10px 0;">
+                            <a href='javascript:(()=>{alert("🗑️ 트윗 삭제 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runDelete()}},interval);function runDelete(){let c=0;document.querySelectorAll(`[data-testid="tweet"]`).forEach((t,i)=>{setTimeout(()=>{try{let m=t.querySelector(`[aria-label="더보기"]`)||t.querySelector(`[aria-label="More"]`);m?.click();setTimeout(()=>{let d=[...document.querySelectorAll(`[role="menuitem"]`)].find(b=>b.textContent.includes("삭제")||b.textContent.includes("Delete"));d?.click();setTimeout(()=>{let y=document.querySelector(`[data-testid="confirmationSheetConfirm"]`);y?.click();c++;console.log(`✅ 삭제됨: ${c}`)},1000)},1000)}catch(e){console.log("❌",e)}},i*2500)})}});'
+                               style="display: inline-block; background: rgba(255,255,255,0.3); color: white; padding: 8px 15px; border-radius: 15px; text-decoration: none; font-size: 0.8em; border: 2px dashed rgba(255,255,255,0.6); margin-bottom: 8px; cursor: grab;"
+                               title="이 링크를 북마크바로 드래그하세요!"
+                               onmousedown="this.style.cursor='grabbing'"
+                               onmouseup="this.style.cursor='grab'">
+                                📌 북마크바로 드래그하기
+                            </a>
+                        </div>
+                        
                         <button class="copy-btn" onclick="copyCode('tweetsCode', this)">
-                            📋 트윗 삭제 코드 복사
+                            📋 또는 코드 복사하기
                         </button>
                     </div>
                 </div>
@@ -468,8 +478,18 @@ javascript:(()=>{alert("🗑️ 트윗 삭제 + 자동 스크롤 시작!");let s
 javascript:(()=>{alert("❤️ 좋아요 취소 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runUnlikes()}},interval);function runUnlikes(){let c=0;document.querySelectorAll('[data-testid="unlike"]').forEach((b,i)=>{setTimeout(()=>{try{b.click();c++;console.log(`💔 좋아요 취소: ${c}`)}catch(e){console.log("❌",e)}},i*1500)})}});
                         </div>
                         
+                        <div style="margin: 10px 0;">
+                            <a href='javascript:(()=>{alert("❤️ 좋아요 취소 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runUnlikes()}},interval);function runUnlikes(){let c=0;document.querySelectorAll(`[data-testid="unlike"]`).forEach((b,i)=>{setTimeout(()=>{try{b.click();c++;console.log(`💔 좋아요 취소: ${c}`)}catch(e){console.log("❌",e)}},i*1500)})}});'
+                               style="display: inline-block; background: rgba(255,255,255,0.3); color: white; padding: 8px 15px; border-radius: 15px; text-decoration: none; font-size: 0.8em; border: 2px dashed rgba(255,255,255,0.6); margin-bottom: 8px; cursor: grab;"
+                               title="이 링크를 북마크바로 드래그하세요!"
+                               onmousedown="this.style.cursor='grabbing'"
+                               onmouseup="this.style.cursor='grab'">
+                                📌 북마크바로 드래그하기
+                            </a>
+                        </div>
+                        
                         <button class="copy-btn" onclick="copyCode('likesCode', this)">
-                            💔 좋아요 취소 코드 복사
+                            📋 또는 코드 복사하기
                         </button>
                     </div>
                 </div>
@@ -483,8 +503,18 @@ javascript:(()=>{alert("❤️ 좋아요 취소 + 자동 스크롤 시작!");let
 javascript:(()=>{alert("🔄 리트윗 취소 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runUnretweets()}},interval);function runUnretweets(){let c=0;document.querySelectorAll('[data-testid="unretweet"]').forEach((b,i)=>{setTimeout(()=>{try{b.click();setTimeout(()=>{document.querySelector('[data-testid="unretweetConfirm"]')?.click();c++;console.log(`🔄 리트윗 취소: ${c}`)},800)}catch(e){console.log("❌",e)}},i*2000)})}});
                         </div>
                         
+                        <div style="margin: 10px 0;">
+                            <a href='javascript:(()=>{alert("🔄 리트윗 취소 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runUnretweets()}},interval);function runUnretweets(){let c=0;document.querySelectorAll(`[data-testid="unretweet"]`).forEach((b,i)=>{setTimeout(()=>{try{b.click();setTimeout(()=>{document.querySelector(`[data-testid="unretweetConfirm"]`)?.click();c++;console.log(`🔄 리트윗 취소: ${c}`)},800)}catch(e){console.log("❌",e)}},i*2000)})}});'
+                               style="display: inline-block; background: rgba(255,255,255,0.3); color: white; padding: 8px 15px; border-radius: 15px; text-decoration: none; font-size: 0.8em; border: 2px dashed rgba(255,255,255,0.6); margin-bottom: 8px; cursor: grab;"
+                               title="이 링크를 북마크바로 드래그하세요!"
+                               onmousedown="this.style.cursor='grabbing'"
+                               onmouseup="this.style.cursor='grab'">
+                                📌 북마크바로 드래그하기
+                            </a>
+                        </div>
+                        
                         <button class="copy-btn" onclick="copyCode('retweetsCode', this)">
-                            🔄 리트윗 취소 코드 복사
+                            📋 또는 코드 복사하기
                         </button>
                     </div>
                 </div>
@@ -498,8 +528,18 @@ javascript:(()=>{alert("🔄 리트윗 취소 + 자동 스크롤 시작!");let s
 javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runQuotes()}},interval);function runQuotes(){let c=0;document.querySelectorAll('[data-testid="tweet"]').forEach((t,i)=>{setTimeout(()=>{try{if(t.innerText.includes("https://t.co")||t.querySelector('[data-testid="quoteTweet"]')){let m=t.querySelector('[aria-label="더보기"]')||t.querySelector('[aria-label="More"]');m?.click();setTimeout(()=>{let d=[...document.querySelectorAll('[role="menuitem"]')].find(b=>b.textContent.includes("삭제")||b.textContent.includes("Delete"));d?.click();setTimeout(()=>{let y=document.querySelector('[data-testid="confirmationSheetConfirm"]');y?.click();c++;console.log(`💬 인용트윗 삭제: ${c}`)},1000)},1000)}}catch(e){console.log("❌",e)}},i*2500)})}});
                         </div>
                         
+                        <div style="margin: 10px 0;">
+                            <a href='javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");let scrolls=0,maxScrolls=50,interval=1500;let scrollInt=setInterval(()=>{window.scrollTo({top:document.body.scrollHeight,behavior:"smooth"});scrolls++;if(scrolls>=maxScrolls){clearInterval(scrollInt);runQuotes()}},interval);function runQuotes(){let c=0;document.querySelectorAll(`[data-testid="tweet"]`).forEach((t,i)=>{setTimeout(()=>{try{if(t.innerText.includes("https://t.co")||t.querySelector(`[data-testid="quoteTweet"]`)){let m=t.querySelector(`[aria-label="더보기"]`)||t.querySelector(`[aria-label="More"]`);m?.click();setTimeout(()=>{let d=[...document.querySelectorAll(`[role="menuitem"]`)].find(b=>b.textContent.includes("삭제")||b.textContent.includes("Delete"));d?.click();setTimeout(()=>{let y=document.querySelector(`[data-testid="confirmationSheetConfirm"]`);y?.click();c++;console.log(`💬 인용트윗 삭제: ${c}`)},1000)},1000)}}catch(e){console.log("❌",e)}},i*2500)})}});'
+                               style="display: inline-block; background: rgba(255,255,255,0.3); color: white; padding: 8px 15px; border-radius: 15px; text-decoration: none; font-size: 0.8em; border: 2px dashed rgba(255,255,255,0.6); margin-bottom: 8px; cursor: grab;"
+                               title="이 링크를 북마크바로 드래그하세요!"
+                               onmousedown="this.style.cursor='grabbing'"
+                               onmouseup="this.style.cursor='grab'">
+                                📌 북마크바로 드래그하기
+                            </a>
+                        </div>
+                        
                         <button class="copy-btn" onclick="copyCode('quotesCode', this)">
-                            💬 인용트윗 삭제 코드 복사
+                            📋 또는 코드 복사하기
                         </button>
                     </div>
                 </div>
@@ -512,7 +552,15 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
                 
                 <div class="steps">
                     <div class="step">
-                        <h4>1️⃣ 자동 스크롤 단계</h4>
+                        <h4>1️⃣ 북마크 만들기 (쉬운 방법)</h4>
+                        <ul>
+                            <li><strong>드래그 방식:</strong> "📌 북마크바로 드래그하기" 링크를 북마크바로 드래그</li>
+                            <li><strong>수동 방식:</strong> 코드 복사 → 북마크 추가 → 붙여넣기</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>2️⃣ 자동 스크롤 단계</h4>
                         <ul>
                             <li><strong>50회 스크롤</strong>로 모든 컨텐츠 로드</li>
                             <li><strong>1.5초 간격</strong>으로 안전하게 스크롤</li>
@@ -521,7 +569,16 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
                     </div>
                     
                     <div class="step">
-                        <h4>2️⃣ 처리 시작</h4>
+                        <h4>2️⃣ 자동 스크롤 단계</h4>
+                        <ul>
+                            <li><strong>50회 스크롤</strong>로 모든 컨텐츠 로드</li>
+                            <li><strong>1.5초 간격</strong>으로 안전하게 스크롤</li>
+                            <li><strong>총 75초</strong> 스크롤 시간</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="step">
+                        <h4>3️⃣ 처리 시작</h4>
                         <ul>
                             <li>스크롤 완료 후 <strong>자동으로 처리 시작</strong></li>
                             <li>찾은 항목들을 <strong>순차적으로 처리</strong></li>
@@ -530,17 +587,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
                     </div>
                     
                     <div class="step">
-                        <h4>3️⃣ 사용 방법</h4>
-                        <ul>
-                            <li><strong>해당 트위터 페이지</strong>로 이동</li>
-                            <li><strong>북마클릿 실행</strong></li>
-                            <li><strong>자동 스크롤 대기</strong> (75초)</li>
-                            <li><strong>처리 완료까지 대기</strong></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="step">
-                        <h4>4️⃣ 페이지별 안내</h4>
+                        <h4>5️⃣ 페이지별 안내</h4>
                         <ul>
                             <li><strong>트윗/인용트윗 삭제:</strong> 내 프로필</li>
                             <li><strong>좋아요 취소:</strong> twitter.com/i/likes</li>
@@ -553,6 +600,14 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
         
         <div class="tips">
             <h3>💡 자동 스크롤 버전 팁</h3>
+            
+            <div class="tip-item">
+                <strong>📌 드래그 앤 드롭:</strong> 각 기능에 있는 "📌 북마크바로 드래그하기" 링크를 마우스로 드래그해서 북마크바에 놓으면 자동으로 북마크가 생성됩니다! (데스크톱 전용)
+            </div>
+            
+            <div class="tip-item">
+                <strong>📱 모바일 사용:</strong> 모바일에서는 드래그 기능이 제한적이므로, "📋 또는 코드 복사하기" 버튼을 사용해서 수동으로 북마크를 만드세요.
+            </div>
             
             <div class="tip-item">
                 <strong>📍 충분한 시간 확보:</strong> 스크롤 단계에서 75초 정도 기다려야 합니다. 중간에 다른 작업을 하지 마세요.
