@@ -436,67 +436,67 @@
         <div class="card">
             <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">🎯 원하는 기능을 선택하세요</h2>
             
-            <div class="function-grid">
-                <div class="function-box tweets-delete">
-                    <div class="function-content">
-                        <h3>🗑️ 내 트윗 삭제</h3>
-                        <p>내가 작성한 모든 트윗을 안전하게 삭제합니다</p>
-                        
-                        <div class="bookmarklet-code" id="tweetsCode">
-javascript:(function(){let count=0;const tweets=document.querySelectorAll('[data-testid="tweet"]');if(tweets.length===0){alert('트윗을 찾을 수 없습니다. 트위터 프로필 페이지로 이동해주세요.');return;}const myTweets=Array.from(tweets).filter(tweet=>{const retweetIcon=tweet.querySelector('[data-testid="retweet"]');const quoteIcon=tweet.querySelector('[data-testid="quote"]');return !retweetIcon?.getAttribute('aria-label')?.includes('리트윗 취소') && !quoteIcon;});if(myTweets.length===0){alert('삭제할 트윗을 찾을 수 없습니다.');return;}if(!confirm('내가 쓴 트윗 '+myTweets.length+'개를 삭제하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;myTweets.forEach((tweet,i)=>{setTimeout(()=>{try{const moreBtn=tweet.querySelector('[aria-label="More"]')||tweet.querySelector('[aria-label="더보기"]');if(moreBtn){moreBtn.click();setTimeout(()=>{const deleteBtn=Array.from(document.querySelectorAll('[role="menuitem"]')).find(btn=>btn.textContent.includes('Delete')||btn.textContent.includes('삭제'));if(deleteBtn){deleteBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="confirmationSheetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('✅ 트윗 삭제: '+processed+'/'+myTweets.length);if(processed===myTweets.length){alert('🎉 내 트윗 삭제 완료!\\n삭제된 트윗: '+processed+'개');}}},1000);}},1000);}}catch(e){console.error('❌ 에러:',e);}},i*2500);});alert('🚀 내 트윗 삭제 시작!\\n총 '+myTweets.length+'개 처리 예정');})();
-                        </div>
-                        
-                        <button class="copy-btn" onclick="copyCode('tweetsCode', this)">
-                            📋 트윗 삭제 코드 복사
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="function-box likes-cancel">
-                    <div class="function-content">
-                        <h3>❤️ 좋아요 취소</h3>
-                        <p>내가 누른 모든 좋아요를 한 번에 취소합니다</p>
-                        
-                        <div class="bookmarklet-code" id="likesCode">
-javascript:(function(){let count=0;const likeButtons=document.querySelectorAll('[data-testid="like"]');const activeLikes=Array.from(likeButtons).filter(btn=>btn.getAttribute('aria-label')?.includes('좋아요 취소')||btn.querySelector('svg')?.style?.color==='rgb(249, 24, 128)');if(activeLikes.length===0){alert('취소할 좋아요를 찾을 수 없습니다.\\n좋아요 목록 페이지에서 실행해주세요.');return;}if(!confirm('좋아요 '+activeLikes.length+'개를 모두 취소하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;activeLikes.forEach((likeBtn,i)=>{setTimeout(()=>{try{if(likeBtn.getAttribute('aria-label')?.includes('좋아요 취소')||likeBtn.querySelector('svg')?.style?.color==='rgb(249, 24, 128)'){likeBtn.click();processed++;console.log('💔 좋아요 취소: '+processed+'/'+activeLikes.length);if(processed===activeLikes.length){alert('🎉 좋아요 취소 완료!\\n취소된 좋아요: '+processed+'개');}}}catch(e){console.error('❌ 에러:',e);}},i*1500);});alert('💔 좋아요 취소 시작!\\n총 '+activeLikes.length+'개 처리 예정');})();
-                        </div>
-                        
-                        <button class="copy-btn" onclick="copyCode('likesCode', this)">
-                            💔 좋아요 취소 코드 복사
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="function-box retweets-remove">
-                    <div class="function-content">
-                        <h3>🔄 리트윗 취소</h3>
-                        <p>내가 리트윗한 모든 게시물을 취소합니다</p>
-                        
-                        <div class="bookmarklet-code" id="retweetsCode">
-javascript:(function(){let count=0;const retweetButtons=document.querySelectorAll('[data-testid="retweet"]');const activeRetweets=Array.from(retweetButtons).filter(btn=>btn.getAttribute('aria-label')?.includes('리트윗 취소')||btn.querySelector('svg')?.style?.color==='rgb(0, 186, 124)');if(activeRetweets.length===0){alert('취소할 리트윗을 찾을 수 없습니다.\\n프로필 페이지에서 실행해주세요.');return;}if(!confirm('리트윗 '+activeRetweets.length+'개를 모두 취소하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;activeRetweets.forEach((retweetBtn,i)=>{setTimeout(()=>{try{if(retweetBtn.getAttribute('aria-label')?.includes('리트윗 취소')||retweetBtn.querySelector('svg')?.style?.color==='rgb(0, 186, 124)'){retweetBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="unretweetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('🔄 리트윗 취소: '+processed+'/'+activeRetweets.length);if(processed===activeRetweets.length){alert('🎉 리트윗 취소 완료!\\n취소된 리트윗: '+processed+'개');}}},800);}}catch(e){console.error('❌ 에러:',e);}},i*2000);});alert('🔄 리트윗 취소 시작!\\n총 '+activeRetweets.length+'개 처리 예정');})();
-                        </div>
-                        
-                        <button class="copy-btn" onclick="copyCode('retweetsCode', this)">
-                            🔄 리트윗 취소 코드 복사
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="function-box quotes-delete">
-                    <div class="function-content">
-                        <h3>💬 인용트윗 삭제</h3>
-                        <p>내가 작성한 인용트윗을 모두 삭제합니다</p>
-                        
-                        <div class="bookmarklet-code" id="quotesCode">
-javascript:(function(){let count=0;const tweets=document.querySelectorAll('[data-testid="tweet"]');const quoteTweets=Array.from(tweets).filter(tweet=>{const quotedTweet=tweet.querySelector('[role="link"]');const hasQuoteStructure=tweet.textContent.length>0&&quotedTweet&&tweet.querySelector('[data-testid="User-Name"]');return hasQuoteStructure;});if(quoteTweets.length===0){alert('삭제할 인용트윗을 찾을 수 없습니다.\\n프로필 페이지에서 실행해주세요.');return;}if(!confirm('인용트윗 '+quoteTweets.length+'개를 삭제하시겠습니까?\\n\\n⚠️ 이 작업은 되돌릴 수 없습니다!')){return;}let processed=0;quoteTweets.forEach((tweet,i)=>{setTimeout(()=>{try{const moreBtn=tweet.querySelector('[aria-label="More"]')||tweet.querySelector('[aria-label="더보기"]');if(moreBtn){moreBtn.click();setTimeout(()=>{const deleteBtn=Array.from(document.querySelectorAll('[role="menuitem"]')).find(btn=>btn.textContent.includes('Delete')||btn.textContent.includes('삭제'));if(deleteBtn){deleteBtn.click();setTimeout(()=>{const confirmBtn=document.querySelector('[data-testid="confirmationSheetConfirm"]');if(confirmBtn){confirmBtn.click();processed++;console.log('💬 인용트윗 삭제: '+processed+'/'+quoteTweets.length);if(processed===quoteTweets.length){alert('🎉 인용트윗 삭제 완료!\\n삭제된 인용트윗: '+processed+'개');}}},1000);}},1000);}}catch(e){console.error('❌ 에러:',e);}},i*2500);});alert('💬 인용트윗 삭제 시작!\\n총 '+quoteTweets.length+'개 처리 예정');})();
-                        </div>
-                        
-                        <button class="copy-btn" onclick="copyCode('quotesCode', this)">
-                            💬 인용트윗 삭제 코드 복사
-                        </button>
-                    </div>
-                </div>
+           <div class="function-grid">
+    <div class="function-box tweets-delete">
+        <div class="function-content">
+            <h3>🗑️ 내 트윗 삭제</h3>
+            <p>내가 작성한 모든 트윗을 안전하게 삭제합니다</p>
+
+            <div class="bookmarklet-code" id="tweetsCode">
+javascript:(()=>{alert("트윗 삭제 시작!");let c=0;document.querySelectorAll('[data-testid="tweet"]').forEach((t,i)=>{setTimeout(()=>{try{let m=t.querySelector('[aria-label="더보기"]');m?.click();setTimeout(()=>{let d=[...document.querySelectorAll('[role="menuitem"]')].find(b=>b.textContent.includes("삭제"));d?.click();setTimeout(()=>{let y=document.querySelector('[data-testid="confirmationSheetConfirm"]');y?.click();c++;console.log(`삭제됨 ${c}`)},1000)},1000)}catch(e){console.log(e)}},i*2500)})})();
             </div>
+
+            <button class="copy-btn" onclick="copyCode('tweetsCode', this)">
+                📋 트윗 삭제 코드 복사
+            </button>
+        </div>
+    </div>
+
+    <div class="function-box likes-cancel">
+        <div class="function-content">
+            <h3>❤️ 좋아요 취소</h3>
+            <p>내가 누른 모든 좋아요를 한 번에 취소합니다</p>
+
+            <div class="bookmarklet-code" id="likesCode">
+javascript:(()=>{alert("좋아요 취소 시작!");let c=0;document.querySelectorAll('[data-testid="unlike"]').forEach((b,i)=>{setTimeout(()=>{try{b.click();c++;console.log(`좋아요 취소 ${c}`)}catch(e){console.log(e)}},i*1500)})})();
+            </div>
+
+            <button class="copy-btn" onclick="copyCode('likesCode', this)">
+                💔 좋아요 취소 코드 복사
+            </button>
+        </div>
+    </div>
+
+    <div class="function-box retweets-remove">
+        <div class="function-content">
+            <h3>🔄 리트윗 취소</h3>
+            <p>내가 리트윗한 모든 게시물을 취소합니다</p>
+
+            <div class="bookmarklet-code" id="retweetsCode">
+javascript:(()=>{alert("리트윗 취소 시작!");let c=0;document.querySelectorAll('[data-testid="unretweet"]').forEach((b,i)=>{setTimeout(()=>{try{b.click();setTimeout(()=>{document.querySelector('[data-testid="unretweetConfirm"]')?.click();c++;console.log(`리트윗 취소 ${c}`)},800)}catch(e){console.log(e)}},i*2000)})})();
+            </div>
+
+            <button class="copy-btn" onclick="copyCode('retweetsCode', this)">
+                🔄 리트윗 취소 코드 복사
+            </button>
+        </div>
+    </div>
+
+    <div class="function-box quotes-delete">
+        <div class="function-content">
+            <h3>💬 인용트윗 삭제</h3>
+            <p>내가 작성한 인용트윗을 모두 삭제합니다</p>
+
+            <div class="bookmarklet-code" id="quotesCode">
+javascript:(()=>{alert("인용트윗 삭제 시작!");let c=0;document.querySelectorAll('[data-testid="tweet"]').forEach((t,i)=>{setTimeout(()=>{try{if(t.innerText.includes("https://t.co")){let m=t.querySelector('[aria-label="더보기"]');m?.click();setTimeout(()=>{let d=[...document.querySelectorAll('[role="menuitem"]')].find(b=>b.textContent.includes("삭제"));d?.click();setTimeout(()=>{let y=document.querySelector('[data-testid="confirmationSheetConfirm"]');y?.click();c++;console.log(`삭제됨 ${c}`)},1000)},1000)}}catch(e){console.log(e)}},i*2500)})})();
+            </div>
+
+            <button class="copy-btn" onclick="copyCode('quotesCode', this)">
+                💬 인용트윗 삭제 코드 복사
+            </button>
+        </div>
+    </div>
+</div>
         </div>
         
         <div class="card">
