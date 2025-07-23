@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🧹 트위터 완전 청소기 (수정됨)</title>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>🧹 트위터 완전 청소기</title>
     <style>
         * {
             margin: 0;
@@ -87,19 +90,10 @@
             border-color: #4a4a4a;
             transform: translateY(-3px);
         }
-        .function-card.fixed {
-            border-color: #10b981;
-            background: #0f1f1a;
-        }
         .function-header {
             display: flex;
             align-items: center;
-            justify-content: space-between;
             margin-bottom: 18px;
-        }
-        .function-title-wrapper {
-            display: flex;
-            align-items: center;
         }
         .function-icon {
             font-size: 1.6rem;
@@ -107,14 +101,6 @@
         }
         .function-title {
             font-size: 1.3rem;
-            font-weight: 600;
-        }
-        .fixed-badge {
-            background: #10b981;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.7rem;
             font-weight: 600;
         }
         .function-desc {
@@ -301,16 +287,13 @@
         <div class="environment">
             <h3>🖥️ 권장 환경</h3>
             <p><strong>권장:</strong> 크롬 브라우저 + PC만 가능</p>
-            <p><strong>참고:</strong> 멈추려면 새로고침을 하거나 창을 닫으세요</p>
         </div>
 
         <div class="functions">
             <div class="function-card">
                 <div class="function-header">
-                    <div class="function-title-wrapper">
-                        <span class="function-icon">❤️</span>
-                        <h3 class="function-title">좋아요 취소</h3>
-                    </div>
+                    <span class="function-icon">❤️</span>
+                    <h3 class="function-title">좋아요 취소</h3>
                 </div>
                 <p class="function-desc">좋아요한 모든 트윗을 최신부터 순서대로 취소합니다</p>
                 <p class="function-page">📍 실행 페이지: twitter.com/i/likes</p>
@@ -351,10 +334,8 @@
 
             <div class="function-card">
                 <div class="function-header">
-                    <div class="function-title-wrapper">
-                        <span class="function-icon">💬</span>
-                        <h3 class="function-title">답글(멘션) 삭제</h3>
-                    </div>
+                    <span class="function-icon">💬</span>
+                    <h3 class="function-title">답글(멘션) 삭제</h3>
                 </div>
                 <p class="function-desc">다른 사람에게 단 답글과 멘션을 최신부터 삭제합니다</p>
                 <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
@@ -363,64 +344,14 @@
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code2')">복사</button>
                     </div>
-                    <div class="code-area" id="code2">(async function() {
-    console.log("💬 답글 삭제 시작");
-    if (!confirm("답글을 삭제하시겠습니까?")) return;
-    
-    window.scrollTo({top: 0, behavior: "smooth"});
-    await new Promise(r => setTimeout(r, 2000));
-    
-    let count = 0;
-    for (let i = 0; i < 50; i++) {
-        const tweets = Array.from(document.querySelectorAll('[data-testid="tweet"]')).filter(t => {
-            const hasReply = t.querySelector('[data-testid="reply"]') || t.innerText.match(/^@\w+/);
-            const isRetweet = t.querySelector('[data-testid="socialContext"]');
-            return hasReply && !isRetweet && t.offsetParent;
-        });
-        
-        for (const tweet of tweets) {
-            try {
-                const moreBtn = tweet.querySelector('[aria-label="더보기"]');
-                if (moreBtn) {
-                    moreBtn.click();
-                    await new Promise(r => setTimeout(r, 800));
-                    
-                    const deleteBtn = [...document.querySelectorAll('[role="menuitem"]')]
-                        .find(b => b.textContent.includes("삭제"));
-                    if (deleteBtn) {
-                        deleteBtn.click();
-                        await new Promise(r => setTimeout(r, 800));
-                        
-                        const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
-                        if (confirmBtn) {
-                            confirmBtn.click();
-                            count++;
-                            console.log(`💬 완료: ${count}개`);
-                            await new Promise(r => setTimeout(r, 1000));
-                        }
-                    }
-                }
-            } catch (e) {
-                console.error("오류:", e);
-            }
-        }
-        
-        window.scrollBy(0, window.innerHeight * 0.8);
-        await new Promise(r => setTimeout(r, 3000));
-        
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) break;
-    }
-    alert(`🎉 완료! ${count}개 삭제됨`);
-})();</div>
+                    <div class="code-area" id="code2">여기에 코드를 입력하세요</div>
                 </div>
             </div>
 
             <div class="function-card">
                 <div class="function-header">
-                    <div class="function-title-wrapper">
-                        <span class="function-icon">📎</span>
-                        <h3 class="function-title">인용트윗 삭제</h3>
-                    </div>
+                    <span class="function-icon">📎</span>
+                    <h3 class="function-title">인용트윗 삭제</h3>
                 </div>
                 <p class="function-desc">모든 인용트윗을 최신부터 순서대로 삭제합니다</p>
                 <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
@@ -429,9 +360,41 @@
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code3')">복사</button>
                     </div>
-                    <div class="code-area" id="code3">(async function() {
-    console.log("📎 인용트윗 삭제 시작");
-    if (!confirm("인용트윗을 삭제하시겠습니까?")) return;
+                    <div class="code-area" id="code3">여기에 코드를 입력하세요</div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <div class="function-header">
+                    <span class="function-icon">🔄</span>
+                    <h3 class="function-title">리트윗 취소</h3>
+                </div>
+                <p class="function-desc">모든 리트윗을 최신부터 순서대로 취소합니다</p>
+                <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
+                <div class="code-box">
+                    <div class="code-header">
+                        <span class="code-label">JavaScript Code</span>
+                        <button class="copy-button" onclick="copyCode(this, 'code4')">복사</button>
+                    </div>
+                    <div class="code-area" id="code4">여기에 코드를 입력하세요</div>
+                </div>
+            </div>
+
+            <div class="function-card">
+                <div class="function-header">
+                    <span class="function-icon">🗑️</span>
+                    <h3 class="function-title">내 트윗 삭제</h3>
+                </div>
+                <p class="function-desc">모든 내 트윗을 최신부터 순서대로 삭제합니다</p>
+                <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
+                <div class="code-box">
+                    <div class="code-header">
+                        <span class="code-label">JavaScript Code</span>
+                        <button class="copy-button" onclick="copyCode(this, 'code5')">복사</button>
+                    </div>
+                    <div class="code-area" id="code5">(async function() {
+    console.log("🗑️ 내 트윗 삭제 시작");
+    if (!confirm("내 트윗을 삭제하시겠습니까?")) return;
     
     window.scrollTo({top: 0, behavior: "smooth"});
     await new Promise(r => setTimeout(r, 2000));
@@ -439,8 +402,9 @@
     let count = 0;
     for (let i = 0; i < 50; i++) {
         const tweets = Array.from(document.querySelectorAll('[data-testid="tweet"]')).filter(t => {
-            return (t.querySelector('[data-testid="quoteTweet"]') || 
-                   t.innerText.includes("https://t.co")) && t.offsetParent;
+            const isRetweet = t.querySelector('[data-testid="socialContext"]');
+            const isQuote = t.querySelector('[data-testid="quoteTweet"]');
+            return !isRetweet && !isQuote && t.offsetParent;
         });
         
         for (const tweet of tweets) {
@@ -460,7 +424,7 @@
                         if (confirmBtn) {
                             confirmBtn.click();
                             count++;
-                            console.log(`📎 완료: ${count}개`);
+                            console.log(`🗑️ 완료: ${count}개`);
                             await new Promise(r => setTimeout(r, 1000));
                         }
                     }
@@ -471,173 +435,11 @@
         }
         
         window.scrollBy(0, window.innerHeight * 0.8);
-        await new Promise(r => setTimeout(r, 3000));
+        await new Promise(r => setTimeout(r, 3500));
         
         if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) break;
     }
     alert(`🎉 완료! ${count}개 삭제됨`);
-})();</div>
-                </div>
-            </div>
-
-            <div class="function-card">
-                <div class="function-header">
-                    <div class="function-title-wrapper">
-                        <span class="function-icon">🔄</span>
-                        <h3 class="function-title">리트윗 취소</h3>
-                    </div>
-                </div>
-                <p class="function-desc">모든 리트윗을 최신부터 순서대로 취소합니다</p>
-                <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
-                <div class="code-box">
-                    <div class="code-header">
-                        <span class="code-label">JavaScript Code</span>
-                        <button class="copy-button" onclick="copyCode(this, 'code4')">복사</button>
-                    </div>
-                    <div class="code-area" id="code4">(async function() {
-    console.log("🔄 리트윗 취소 시작");
-    if (!confirm("리트윗을 취소하시겠습니까?")) return;
-    
-    window.scrollTo({top: 0, behavior: "smooth"});
-    await new Promise(r => setTimeout(r, 2000));
-    
-    let count = 0;
-    for (let i = 0; i < 50; i++) {
-        const buttons = document.querySelectorAll('[data-testid="unretweet"]');
-        if (buttons.length > 0) {
-            for (const btn of buttons) {
-                if (btn && btn.offsetParent) {
-                    btn.click();
-                    await new Promise(r => setTimeout(r, 800));
-                    
-                    const confirmBtn = document.querySelector('[data-testid="unretweetConfirm"]');
-                    if (confirmBtn) {
-                        confirmBtn.click();
-                        count++;
-                        console.log(`🔄 완료: ${count}개`);
-                        await new Promise(r => setTimeout(r, 800));
-                    }
-                }
-            }
-        }
-        
-        window.scrollBy(0, window.innerHeight * 0.8);
-        await new Promise(r => setTimeout(r, 2500));
-        
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) break;
-    }
-    alert(`🎉 완료! ${count}개 취소됨`);
-})();</div>
-                </div>
-            </div>
-
-            <div class="function-card fixed">
-                <div class="function-header">
-                    <div class="function-title-wrapper">
-                        <span class="function-icon">🗑️</span>
-                        <h3 class="function-title">내 트윗 삭제</h3>
-                    </div>
-                    <span class="fixed-badge">수정됨</span>
-                </div>
-                <p class="function-desc">모든 내 트윗을 최신부터 순서대로 삭제합니다 (버튼 찾기 개선)</p>
-                <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
-                <div class="code-box">
-                    <div class="code-header">
-                        <span class="code-label">JavaScript Code (수정된 버전)</span>
-                        <button class="copy-button" onclick="copyCode(this, 'code5')">복사</button>
-                    </div>
-                    <div class="code-area" id="code5">(async () => {
-  const confirmDelete = confirm("⚠️ 정말로 본인이 작성한 트윗을 하나씩 삭제하시겠습니까?\n(되돌릴 수 없습니다)");
-  if (!confirmDelete) {
-    console.log("[🧹트윗 삭제기] 🚫 사용자가 삭제를 취소했습니다.");
-    return;
-  }
-
-  const sleep = ms => new Promise(res => setTimeout(res, ms));
-  const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
-  const log = msg => console.log(`[🧹트윗 삭제기:중간모드] ${msg}`);
-  let deleted = 0;
-
-  const simulateClick = el => {
-    const evt = new MouseEvent("click", { bubbles: true, cancelable: true, view: window });
-    el.dispatchEvent(evt);
-  };
-
-  const deleteOneTweet = async tweet => {
-    try {
-      const moreBtn = tweet.querySelector('[data-testid="caret"]');
-      if (!moreBtn) return false;
-
-      simulateClick(moreBtn);
-      await sleep(random(500, 800));
-
-      const menuItems = [...document.querySelectorAll('div[role="menuitem"]')];
-      const deleteBtn = menuItems.find(el => el.innerText.includes('삭제') || el.innerText.includes('Delete'));
-      if (!deleteBtn) {
-        document.body.click();
-        return false;
-      }
-
-      simulateClick(deleteBtn);
-      await sleep(random(800, 1200));
-
-      // ✅ 핵심 수정: 버튼 또는 div[role="button"] 모두 검색
-      const confirmBtn = [...document.querySelectorAll('button, div[role="button"]')]
-        .find(el => el.innerText.trim() === 'Delete' || el.innerText.trim() === '삭제');
-      if (!confirmBtn) {
-        document.body.click();
-        return false;
-      }
-
-      confirmBtn.focus(); // 포커스 주고
-      simulateClick(confirmBtn); // 클릭 이벤트 보내기
-
-      deleted++;
-      log(`🗑️ ${deleted}번째 트윗 삭제`);
-      await sleep(random(2500, 3000));
-      return true;
-    } catch (e) {
-      log(`⚠️ 오류: ${e.message}`);
-      return false;
-    }
-  };
-
-  const run = async () => {
-    let round = 0;
-    while (true) {
-      const tweets = [...document.querySelectorAll('article')];
-      if (tweets.length === 0) {
-        log('❗ 더 이상 트윗이 없습니다. 종료합니다.');
-        break;
-      }
-
-      let deletedInThisRound = false;
-
-      for (let i = 0; i < tweets.length; i++) {
-        const tweet = tweets[i];
-        const result = await deleteOneTweet(tweet);
-        if (result) {
-          deletedInThisRound = true;
-          break;
-        }
-      }
-
-      if (!deletedInThisRound) {
-        window.scrollBy(0, 1000);
-        await sleep(random(2000, 2500));
-        round++;
-        log(`📜 ${round}번째 스크롤`);
-        if (round > 30) {
-          log('🔚 너무 많은 반복. 종료합니다.');
-          break;
-        }
-      }
-    }
-
-    log(`✅ 총 ${deleted}개 트윗 삭제 완료`);
-  };
-
-  await run();
 })();</div>
                 </div>
             </div>
