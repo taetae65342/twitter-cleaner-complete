@@ -43,6 +43,51 @@
             font-weight: 400;
         }
 
+        .instructions {
+            background: #0d1929;
+            border: 1px solid #1f2937;
+            border-radius: 6px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+
+        .instructions h3 {
+            color: #60a5fa;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+        }
+
+        .instructions ol {
+            color: #9ca3af;
+            padding-left: 20px;
+        }
+
+        .instructions li {
+            margin-bottom: 8px;
+        }
+
+        .browser-support {
+            background: #1a2332;
+            border: 1px solid #2563eb;
+            border-radius: 6px;
+            padding: 15px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .browser-support h3 {
+            color: #3b82f6;
+            margin-bottom: 8px;
+            font-size: 1rem;
+        }
+
+        .browser-support p {
+            color: #93c5fd;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
         .tools-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
@@ -144,9 +189,11 @@
             line-height: 1.4;
             color: #e6edf3;
             white-space: pre-wrap;
-            word-break: break-all;
-            max-height: 300px;
+            word-break: break-word;
+            max-height: 250px;
+            min-height: 250px;
             overflow-y: auto;
+            overflow-x: hidden;
         }
 
         .warning {
@@ -167,51 +214,6 @@
         .warning-text {
             color: #fbbf24;
             font-size: 0.9rem;
-        }
-
-        .instructions {
-            background: #0d1929;
-            border: 1px solid #1f2937;
-            border-radius: 6px;
-            padding: 20px;
-            margin-top: 30px;
-        }
-
-        .instructions h3 {
-            color: #60a5fa;
-            margin-bottom: 12px;
-            font-size: 1.1rem;
-        }
-
-        .instructions ol {
-            color: #9ca3af;
-            padding-left: 20px;
-        }
-
-        .instructions li {
-            margin-bottom: 8px;
-        }
-
-        .browser-support {
-            background: #1a2332;
-            border: 1px solid #2563eb;
-            border-radius: 6px;
-            padding: 15px;
-            margin-top: 20px;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-
-        .browser-support h3 {
-            color: #3b82f6;
-            margin-bottom: 8px;
-            font-size: 1rem;
-        }
-
-        .browser-support p {
-            color: #93c5fd;
-            font-size: 0.9rem;
-            margin: 0;
         }
 
         @media (max-width: 768px) {
@@ -272,25 +274,24 @@
                         <button class="copy-btn" onclick="copyCode(this, 'likes-code')">복사</button>
                     </div>
                     <div class="code-content" id="likes-code">(async function cancelLikes() {
-    console.log("❤️ 좋아요 취소 + 동시 스크롤 시작!");
+    console.log("❤️ 좋아요 취소 + 최신부터 시작!");
     
-    if (!confirm("좋아요를 스크롤하면서 동시에 취소하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
+    if (!confirm("좋아요를 최신부터 순서대로 취소하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
         return;
     }
+    
+    // 페이지 맨 위로 이동
+    window.scrollTo({top: 0, behavior: "smooth"});
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     let canceledCount = 0;
     let scrollCount = 0;
     const maxScrolls = 50;
-    const scrollInterval = 2000;
+    let previousHeight = 0;
     
     for (let i = 0; i < maxScrolls; i++) {
-        // 스크롤 실행
-        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
         scrollCount++;
-        console.log(`📜 스크롤 진행: ${scrollCount}/${maxScrolls}`);
-        
-        // 스크롤 후 잠시 대기 (DOM 로딩 시간)
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
         
         // 현재 화면에 있는 좋아요 버튼들 찾기
         const likeButtons = document.querySelectorAll('[data-testid="unlike"]');
@@ -305,7 +306,7 @@
                     if (button && button.offsetParent !== null) { // 화면에 보이는 버튼만
                         button.click();
                         canceledCount++;
-                        console.log(`💔 좋아요 취소 완료: ${canceledCount}개`);
+                        console.log(`💔 좋아요 취소 완료: ${canceledCount}개 (최신부터)`);
                         await new Promise(resolve => setTimeout(resolve, 300));
                     }
                 } catch (error) {
@@ -314,38 +315,26 @@
             }
         }
         
-        // 다음 스크롤까지 대기
-        await new Promise(resolve => setTimeout(resolve, scrollInterval - 1000));
+        // 조금씩 아래로 스크롤 (최신에서 오래된 순서)
+        const currentHeight = window.scrollY;
+        window.scrollTo({top: currentHeight + window.innerHeight * 0.8, behavior: "smooth"});
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
         // 더 이상 스크롤할 내용이 없으면 중단
         if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
             console.log("📜 페이지 끝에 도달했습니다.");
             break;
         }
-    }
-    
-    // 마지막으로 남은 좋아요들 처리
-    console.log("🔍 마지막 좋아요 확인 중...");
-    const remainingLikes = document.querySelectorAll('[data-testid="unlike"]');
-    
-    if (remainingLikes.length > 0) {
-        console.log(`💔 마지막 ${remainingLikes.length}개 좋아요 취소 중...`);
-        for (let i = 0; i < remainingLikes.length; i++) {
-            try {
-                const button = remainingLikes[i];
-                if (button) {
-                    button.click();
-                    canceledCount++;
-                    console.log(`💔 좋아요 취소: ${canceledCount}개`);
-                    await new Promise(resolve => setTimeout(resolve, 500));
-                }
-            } catch (error) {
-                console.error("❌ 취소 중 오류:", error);
-            }
+        
+        // 스크롤이 더 이상 진행되지 않으면 중단
+        if (Math.abs(window.scrollY - previousHeight) < 50) {
+            console.log("📜 더 이상 스크롤할 수 없습니다.");
+            break;
         }
+        previousHeight = window.scrollY;
     }
     
-    alert(`🎉 좋아요 취소 완료!\n총 취소된 좋아요: ${canceledCount}개\n스크롤 횟수: ${scrollCount}회`);
+    alert(`🎉 좋아요 취소 완료! (최신부터 순서대로)\n총 취소된 좋아요: ${canceledCount}개\n스크롤 횟수: ${scrollCount}회`);
 })();</div>
                 </div>
             </div>
@@ -353,6 +342,120 @@
             <div class="tool-card">
                 <div class="tool-header">
                     <span class="tool-icon">💬</span>
+                    <h3 class="tool-title">답글(멘션) 삭제</h3>
+                </div>
+                <p class="tool-description">다른 사람에게 단 답글과 멘션을 최신부터 삭제합니다</p>
+                <p class="tool-page">📍 실행 페이지: twitter.com/사용자명</p>
+                
+                <div class="code-container">
+                    <div class="code-header">
+                        <span class="code-label">JavaScript Code</span>
+                        <button class="copy-btn" onclick="copyCode(this, 'replies-code')">복사</button>
+                    </div>
+                    <div class="code-content" id="replies-code">(async function deleteReplies() {
+    console.log("💬 답글(멘션) 삭제 + 최신부터 시작!");
+    
+    if (!confirm("다른 사람에게 단 답글을 최신부터 순서대로 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
+        return;
+    }
+    
+    // 페이지 맨 위로 이동
+    window.scrollTo({top: 0, behavior: "smooth"});
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    let deletedCount = 0;
+    let scrollCount = 0;
+    const maxScrolls = 50;
+    let previousHeight = 0;
+    
+    for (let i = 0; i < maxScrolls; i++) {
+        scrollCount++;
+        console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
+        
+        // 현재 화면에 있는 답글들 찾기
+        const allTweets = document.querySelectorAll('[data-testid="tweet"]');
+        const replyTweets = Array.from(allTweets).filter(tweet => {
+            // 답글인지 확인 (다른 사용자에게 답글 달은 경우)
+            const replyContext = tweet.querySelector('[data-testid="reply"]');
+            const tweetText = tweet.innerText;
+            
+            // @사용자명으로 시작하거나 답글 표시가 있는 트윗
+            const hasReplyIndicator = replyContext || 
+                                     tweetText.match(/^@\w+/) || 
+                                     tweet.querySelector('svg[data-testid="reply"]')?.closest('[role="group"]');
+            
+            // 리트윗이나 인용트윗이 아닌 답글만 선택
+            const isRetweet = tweet.querySelector('[data-testid="socialContext"]') && 
+                             (tweet.innerText.includes("님이 리트윗") || tweet.innerText.includes("Retweeted"));
+            const isQuoteTweet = tweet.querySelector('[data-testid="quoteTweet"]');
+            
+            return hasReplyIndicator && !isRetweet && !isQuoteTweet && tweet.offsetParent !== null;
+        });
+        
+        if (replyTweets.length > 0) {
+            console.log(`💬 현재 화면에서 ${replyTweets.length}개 답글 발견!`);
+            
+            // 발견된 답글들 즉시 삭제
+            for (let j = 0; j < replyTweets.length; j++) {
+                try {
+                    const tweet = replyTweets[j];
+                    if (tweet && tweet.offsetParent !== null) { // 화면에 보이는 트윗만
+                        const moreBtn = tweet.querySelector('[aria-label="더보기"]') || tweet.querySelector('[aria-label="More"]');
+                        
+                        if (moreBtn) {
+                            moreBtn.click();
+                            await new Promise(resolve => setTimeout(resolve, 800));
+                            
+                            const deleteBtn = [...document.querySelectorAll('[role="menuitem"]')]
+                                .find(btn => btn.textContent.includes("삭제") || btn.textContent.includes("Delete"));
+                            
+                            if (deleteBtn) {
+                                deleteBtn.click();
+                                await new Promise(resolve => setTimeout(resolve, 800));
+                                
+                                const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
+                                if (confirmBtn) {
+                                    confirmBtn.click();
+                                    deletedCount++;
+                                    console.log(`💬 답글 삭제 완료: ${deletedCount}개 (최신부터)`);
+                                    await new Promise(resolve => setTimeout(resolve, 800));
+                                }
+                            }
+                        }
+                    }
+                } catch (error) {
+                    console.error("❌ 삭제 중 오류:", error);
+                }
+            }
+        }
+        
+        // 조금씩 아래로 스크롤 (최신에서 오래된 순서)
+        const currentHeight = window.scrollY;
+        window.scrollTo({top: currentHeight + window.innerHeight * 0.8, behavior: "smooth"});
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        
+        // 더 이상 스크롤할 내용이 없으면 중단
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+            console.log("📜 페이지 끝에 도달했습니다.");
+            break;
+        }
+        
+        // 스크롤이 더 이상 진행되지 않으면 중단
+        if (Math.abs(window.scrollY - previousHeight) < 50) {
+            console.log("📜 더 이상 스크롤할 수 없습니다.");
+            break;
+        }
+        previousHeight = window.scrollY;
+    }
+    
+    alert(`🎉 답글(멘션) 삭제 완료! (최신부터 순서대로)\n총 삭제된 답글: ${deletedCount}개\n스크롤 횟수: ${scrollCount}회`);
+})();</div>
+                </div>
+            </div>
+
+            <div class="tool-card">
+                <div class="tool-header">
+                    <span class="tool-icon">📎</span>
                     <h3 class="tool-title">인용트윗 삭제</h3>
                 </div>
                 <p class="tool-description">자동 스크롤로 모든 인용트윗을 불러온 후 삭제합니다</p>
@@ -364,25 +467,24 @@
                         <button class="copy-btn" onclick="copyCode(this, 'quote-code')">복사</button>
                     </div>
                     <div class="code-content" id="quote-code">(async function deleteQuoteTweets() {
-    console.log("💬 인용트윗 삭제 + 동시 스크롤 시작!");
+    console.log("📎 인용트윗 삭제 + 최신부터 시작!");
     
-    if (!confirm("인용트윗을 스크롤하면서 동시에 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
+    if (!confirm("인용트윗을 최신부터 순서대로 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
         return;
     }
+    
+    // 페이지 맨 위로 이동
+    window.scrollTo({top: 0, behavior: "smooth"});
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     let deletedCount = 0;
     let scrollCount = 0;
     const maxScrolls = 50;
-    const scrollInterval = 3000;
+    let previousHeight = 0;
     
     for (let i = 0; i < maxScrolls; i++) {
-        // 스크롤 실행
-        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
         scrollCount++;
-        console.log(`📜 스크롤 진행: ${scrollCount}/${maxScrolls}`);
-        
-        // 스크롤 후 잠시 대기 (DOM 로딩 시간)
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
         
         // 현재 화면에 있는 인용트윗들 찾기
         const allTweets = document.querySelectorAll('[data-testid="tweet"]');
@@ -392,7 +494,7 @@
         });
         
         if (quoteTweets.length > 0) {
-            console.log(`💬 현재 화면에서 ${quoteTweets.length}개 인용트윗 발견!`);
+            console.log(`📎 현재 화면에서 ${quoteTweets.length}개 인용트윗 발견!`);
             
             // 발견된 인용트윗들 즉시 삭제
             for (let j = 0; j < quoteTweets.length; j++) {
@@ -416,7 +518,7 @@
                                 if (confirmBtn) {
                                     confirmBtn.click();
                                     deletedCount++;
-                                    console.log(`💬 인용트윗 삭제 완료: ${deletedCount}개`);
+                                    console.log(`📎 인용트윗 삭제 완료: ${deletedCount}개 (최신부터)`);
                                     await new Promise(resolve => setTimeout(resolve, 500));
                                 }
                             }
@@ -428,17 +530,26 @@
             }
         }
         
-        // 다음 스크롤까지 대기
-        await new Promise(resolve => setTimeout(resolve, scrollInterval - 1500));
+        // 조금씩 아래로 스크롤 (최신에서 오래된 순서)
+        const currentHeight = window.scrollY;
+        window.scrollTo({top: currentHeight + window.innerHeight * 0.8, behavior: "smooth"});
+        await new Promise(resolve => setTimeout(resolve, 3000));
         
         // 더 이상 스크롤할 내용이 없으면 중단
         if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
             console.log("📜 페이지 끝에 도달했습니다.");
             break;
         }
+        
+        // 스크롤이 더 이상 진행되지 않으면 중단
+        if (Math.abs(window.scrollY - previousHeight) < 50) {
+            console.log("📜 더 이상 스크롤할 수 없습니다.");
+            break;
+        }
+        previousHeight = window.scrollY;
     }
     
-    alert(`🎉 인용트윗 삭제 완료!\n총 삭제된 인용트윗: ${deletedCount}개\n스크롤 횟수: ${scrollCount}회`);
+    alert(`🎉 인용트윗 삭제 완료! (최신부터 순서대로)\n총 삭제된 인용트윗: ${deletedCount}개\n스크롤 횟수: ${scrollCount}회`);
 })();</div>
                 </div>
             </div>
@@ -457,25 +568,24 @@
                         <button class="copy-btn" onclick="copyCode(this, 'retweet-code')">복사</button>
                     </div>
                     <div class="code-content" id="retweet-code">(async function cancelRetweets() {
-    console.log("🔄 리트윗 취소 + 동시 스크롤 시작!");
+    console.log("🔄 리트윗 취소 + 최신부터 시작!");
     
-    if (!confirm("리트윗을 스크롤하면서 동시에 취소하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
+    if (!confirm("리트윗을 최신부터 순서대로 취소하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
         return;
     }
+    
+    // 페이지 맨 위로 이동
+    window.scrollTo({top: 0, behavior: "smooth"});
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     let canceledCount = 0;
     let scrollCount = 0;
     const maxScrolls = 50;
-    const scrollInterval = 2500;
+    let previousHeight = 0;
     
     for (let i = 0; i < maxScrolls; i++) {
-        // 스크롤 실행
-        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
         scrollCount++;
-        console.log(`📜 스크롤 진행: ${scrollCount}/${maxScrolls}`);
-        
-        // 스크롤 후 잠시 대기 (DOM 로딩 시간)
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log(`📜 진행 상황: ${scrollCount}/${maxScrolls}`);
         
         // 현재 화면에 있는 리트윗 버튼들 찾기
         const retweetButtons = document.querySelectorAll('[data-testid="unretweet"]');
@@ -495,7 +605,7 @@
                         if (confirmBtn) {
                             confirmBtn.click();
                             canceledCount++;
-                            console.log(`🔄 리트윗 취소 완료: ${canceledCount}개`);
+                            console.log(`🔄 리트윗 취소 완료: ${canceledCount}개 (최신부터)`);
                             await new Promise(resolve => setTimeout(resolve, 500));
                         }
                     }
@@ -505,44 +615,26 @@
             }
         }
         
-        // 다음 스크롤까지 대기
-        await new Promise(resolve => setTimeout(resolve, scrollInterval - 1000));
+        // 조금씩 아래로 스크롤 (최신에서 오래된 순서)
+        const currentHeight = window.scrollY;
+        window.scrollTo({top: currentHeight + window.innerHeight * 0.8, behavior: "smooth"});
+        await new Promise(resolve => setTimeout(resolve, 2500));
         
         // 더 이상 스크롤할 내용이 없으면 중단
         if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
             console.log("📜 페이지 끝에 도달했습니다.");
             break;
         }
-    }
-    
-    // 마지막으로 남은 리트윗들 처리
-    console.log("🔍 마지막 리트윗 확인 중...");
-    const remainingRetweets = document.querySelectorAll('[data-testid="unretweet"]');
-    
-    if (remainingRetweets.length > 0) {
-        console.log(`🔄 마지막 ${remainingRetweets.length}개 리트윗 취소 중...`);
-        for (let i = 0; i < remainingRetweets.length; i++) {
-            try {
-                const button = remainingRetweets[i];
-                if (button) {
-                    button.click();
-                    await new Promise(resolve => setTimeout(resolve, 800));
-                    
-                    const confirmBtn = document.querySelector('[data-testid="unretweetConfirm"]');
-                    if (confirmBtn) {
-                        confirmBtn.click();
-                        canceledCount++;
-                        console.log(`🔄 리트윗 취소: ${canceledCount}개`);
-                        await new Promise(resolve => setTimeout(resolve, 500));
-                    }
-                }
-            } catch (error) {
-                console.error("❌ 취소 중 오류:", error);
-            }
+        
+        // 스크롤이 더 이상 진행되지 않으면 중단
+        if (Math.abs(window.scrollY - previousHeight) < 50) {
+            console.log("📜 더 이상 스크롤할 수 없습니다.");
+            break;
         }
+        previousHeight = window.scrollY;
     }
     
-    alert(`🎉 리트윗 취소 완료!\n총 취소된 리트윗: ${canceledCount}개\n스크롤 횟수: ${scrollCount}회`);
+    alert(`🎉 리트윗 취소 완료! (최신부터 순서대로)\n총 취소된 리트윗: ${canceledCount}개\n스크롤 횟수: ${scrollCount}회`);
 })();</div>
                 </div>
             </div>
@@ -561,118 +653,17 @@
                         <button class="copy-btn" onclick="copyCode(this, 'delete-code')">복사</button>
                     </div>
                     <div class="code-content" id="delete-code">(async function deleteMyTweets() {
-    console.log("🗑️ 내 트윗 삭제 + 동시 스크롤 시작!");
+    console.log("🗑️ 내 트윗 삭제 + 최신부터 시작!");
     
-    if (!confirm("내 트윗을 스크롤하면서 동시에 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
+    if (!confirm("내 트윗을 최신부터 순서대로 삭제하시겠습니까?\n\n⚠️ 이 작업은 되돌릴 수 없습니다!")) {
         return;
     }
+    
+    // 페이지 맨 위로 이동
+    window.scrollTo({top: 0, behavior: "smooth"});
+    await new Promise(resolve => setTimeout(resolve, 2000));
     
     let deletedCount = 0;
     let scrollCount = 0;
     const maxScrolls = 50;
-    const scrollInterval = 3500;
-    
-    for (let i = 0; i < maxScrolls; i++) {
-        // 스크롤 실행
-        window.scrollTo({top: document.body.scrollHeight, behavior: "smooth"});
-        scrollCount++;
-        console.log(`📜 스크롤 진행: ${scrollCount}/${maxScrolls}`);
-        
-        // 스크롤 후 잠시 대기 (DOM 로딩 시간)
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // 현재 화면에 있는 내 트윗들 찾기 (리트윗과 인용트윗 제외)
-        const allTweets = document.querySelectorAll('[data-testid="tweet"]');
-        const myTweets = Array.from(allTweets).filter(tweet => {
-            // 리트윗이나 인용트윗이 아닌 원본 트윗만 선택
-            const isRetweet = tweet.querySelector('[data-testid="socialContext"]') && 
-                             (tweet.innerText.includes("님이 리트윗") || tweet.innerText.includes("Retweeted"));
-            const isQuoteTweet = tweet.querySelector('[data-testid="quoteTweet"]');
-            
-            return !isRetweet && !isQuoteTweet && tweet.offsetParent !== null;
-        });
-        
-        if (myTweets.length > 0) {
-            console.log(`🗑️ 현재 화면에서 ${myTweets.length}개 내 트윗 발견!`);
-            
-            // 발견된 내 트윗들 즉시 삭제
-            for (let j = 0; j < myTweets.length; j++) {
-                try {
-                    const tweet = myTweets[j];
-                    if (tweet && tweet.offsetParent !== null) { // 화면에 보이는 트윗만
-                        const moreBtn = tweet.querySelector('[aria-label="더보기"]') || tweet.querySelector('[aria-label="More"]');
-                        
-                        if (moreBtn) {
-                            moreBtn.click();
-                            await new Promise(resolve => setTimeout(resolve, 800));
-                            
-                            const deleteBtn = [...document.querySelectorAll('[role="menuitem"]')]
-                                .find(btn => btn.textContent.includes("삭제") || btn.textContent.includes("Delete"));
-                            
-                            if (deleteBtn) {
-                                deleteBtn.click();
-                                await new Promise(resolve => setTimeout(resolve, 800));
-                                
-                                const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
-                                if (confirmBtn) {
-                                    confirmBtn.click();
-                                    deletedCount++;
-                                    console.log(`🗑️ 내 트윗 삭제 완료: ${deletedCount}개`);
-                                    await new Promise(resolve => setTimeout(resolve, 800));
-                                }
-                            }
-                        }
-                    }
-                } catch (error) {
-                    console.error("❌ 삭제 중 오류:", error);
-                }
-            }
-        }
-        
-        // 다음 스크롤까지 대기
-        await new Promise(resolve => setTimeout(resolve, scrollInterval - 1500));
-        
-        // 더 이상 스크롤할 내용이 없으면 중단
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
-            console.log("📜 페이지 끝에 도달했습니다.");
-            break;
-        }
-    }
-    
-    alert(`🎉 내 트윗 삭제 완료!\n총 삭제된 트윗: ${deletedCount}개\n스크롤 횟수: ${scrollCount}회`);
-})();</div>
-                </div>
-            </div>
-        </div>
-
-        <div class="warning">
-            <div class="warning-title">⚠️ 주의사항</div>
-            <div class="warning-text">
-                모든 작업은 되돌릴 수 없습니다. 실행 전 신중히 생각해보세요.<br>
-                대량 작업으로 인해 일시적으로 계정이 제한될 수 있습니다.
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function copyCode(button, codeId) {
-            const codeElement = document.getElementById(codeId);
-            const text = codeElement.textContent;
-            
-            navigator.clipboard.writeText(text).then(() => {
-                const originalText = button.textContent;
-                button.textContent = '복사됨!';
-                button.classList.add('copied');
-                
-                setTimeout(() => {
-                    button.textContent = originalText;
-                    button.classList.remove('copied');
-                }, 2000);
-            }).catch(err => {
-                console.error('복사 실패:', err);
-                alert('복사에 실패했습니다. 수동으로 복사해주세요.');
-            });
-        }
-    </script>
-</body>
-</html>
+    let previousHeight = 0;
