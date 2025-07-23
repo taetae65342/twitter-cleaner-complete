@@ -545,7 +545,99 @@
                         <span class="code-label">JavaScript Code (수정된 버전)</span>
                         <button class="copy-button" onclick="copyCode(this, 'code5')">복사</button>
                     </div>
-                    <div class="code-area" id="code5">!!여기에 입력하세요!!</div>
+                    <div class="code-area" id="code5">(async () => {
+  const confirmDelete = confirm("⚠️ 정말로 본인이 작성한 트윗을 하나씩 삭제하시겠습니까?\n(되돌릴 수 없습니다)");
+  if (!confirmDelete) {
+    console.log("[🧹트윗 삭제기] 🚫 사용자가 삭제를 취소했습니다.");
+    return;
+  }
+
+  const sleep = ms => new Promise(res => setTimeout(res, ms));
+  const random = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
+  const log = msg => console.log(`[🧹트윗 삭제기:중간모드] ${msg}`);
+  let deleted = 0;
+
+  const simulateClick = el => {
+    const evt = new MouseEvent("click", { bubbles: true, cancelable: true, view: window });
+    el.dispatchEvent(evt);
+  };
+
+  const deleteOneTweet = async tweet => {
+    try {
+      const moreBtn = tweet.querySelector('[data-testid="caret"]');
+      if (!moreBtn) return false;
+
+      simulateClick(moreBtn);
+      await sleep(random(500, 800));
+
+      const menuItems = [...document.querySelectorAll('div[role="menuitem"]')];
+      const deleteBtn = menuItems.find(el => el.innerText.includes('삭제') || el.innerText.includes('Delete'));
+      if (!deleteBtn) {
+        document.body.click();
+        return false;
+      }
+
+      simulateClick(deleteBtn);
+      await sleep(random(800, 1200));
+
+      // ✅ 핵심 수정: 버튼 또는 div[role="button"] 모두 검색
+      const confirmBtn = [...document.querySelectorAll('button, div[role="button"]')]
+        .find(el => el.innerText.trim() === 'Delete' || el.innerText.trim() === '삭제');
+      if (!confirmBtn) {
+        document.body.click();
+        return false;
+      }
+
+      confirmBtn.focus(); // 포커스 주고
+      simulateClick(confirmBtn); // 클릭 이벤트 보내기
+
+      deleted++;
+      log(`🗑️ ${deleted}번째 트윗 삭제`);
+      await sleep(random(2500, 3000));
+      return true;
+    } catch (e) {
+      log(`⚠️ 오류: ${e.message}`);
+      return false;
+    }
+  };
+
+  const run = async () => {
+    let round = 0;
+    while (true) {
+      const tweets = [...document.querySelectorAll('article')];
+      if (tweets.length === 0) {
+        log('❗ 더 이상 트윗이 없습니다. 종료합니다.');
+        break;
+      }
+
+      let deletedInThisRound = false;
+
+      for (let i = 0; i < tweets.length; i++) {
+        const tweet = tweets[i];
+        const result = await deleteOneTweet(tweet);
+        if (result) {
+          deletedInThisRound = true;
+          break;
+        }
+      }
+
+      if (!deletedInThisRound) {
+        window.scrollBy(0, 1000);
+        await sleep(random(2000, 2500));
+        round++;
+        log(`📜 ${round}번째 스크롤`);
+        if (round > 30) {
+          log('🔚 너무 많은 반복. 종료합니다.');
+          break;
+        }
+      }
+    }
+
+    log(`✅ 총 ${deleted}개 트윗 삭제 완료`);
+  };
+
+  await run();
+})();</div>
                 </div>
             </div>
         </div>
