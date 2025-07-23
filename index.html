@@ -400,8 +400,8 @@
     <div class="container">
         <div class="header">
             <h1>🧹 트위터 완전 청소기</h1>
-            <div class="badge">🚀 자동 스크롤 버전</div>
-            <p>자동 스크롤로 모든 컨텐츠를 불러온 후 처리합니다</p>
+            <div class="badge">💻 PC 전용 버전</div>
+            <p>데스크톱에서 강력한 자동 스크롤 기능으로 트위터를 완벽하게 정리하세요</p>
         </div>
         
         <div class="install-prompt" id="installPrompt">
@@ -425,23 +425,38 @@
             </div>
         </div>
         
-        <div class="card" style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); border: 2px solid #1976d2;">
+        <div class="card" style="background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%); border: 2px solid #ff9800; margin-bottom: 20px;">
             <div style="text-align: center; padding: 20px;">
-                <h2 style="color: #1976d2; margin-bottom: 15px;">📱 모바일 사용자 필독!</h2>
-                <p style="font-size: 1.1em; color: #1565c0; font-weight: bold; line-height: 1.6;">
-                    모바일에서는 <strong>북마크를 즐겨찾기에 추가</strong>한 후,<br>
-                    해당 트위터 페이지에서 <strong>즐겨찾기를 터치</strong>해서 실행하세요!
+                <h2 style="color: #ef6c00; margin-bottom: 15px;">📱 모바일 사용자 안내</h2>
+                <p style="font-size: 1.1em; color: #e65100; font-weight: bold; line-height: 1.6; margin-bottom: 15px;">
+                    이 도구는 <strong>PC/데스크톱 전용</strong>입니다.<br>
+                    모바일에서는 아래 대안을 이용해주세요!
+                </p>
+                <div style="background: white; padding: 15px; border-radius: 10px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    <p style="color: #333; margin: 0; font-weight: bold;">
+                        📱 <strong>모바일 추천 앱:</strong> TweetDelete, Circleboom, Twitter Archive Eraser
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card" style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); border: 2px solid #4caf50;" id="desktopOnly">
+            <div style="text-align: center; padding: 20px;">
+                <h2 style="color: #2e7d32; margin-bottom: 15px;">💻 PC 사용자 환영!</h2>
+                <p style="font-size: 1.1em; color: #388e3c; font-weight: bold; line-height: 1.6;">
+                    데스크톱에서 <strong>드래그 앤 드롭</strong>으로 쉽게 북마크를 만들고,<br>
+                    <strong>자동 스크롤 + 일괄 처리</strong>로 효율적으로 정리하세요!
                 </p>
                 <div style="background: white; padding: 15px; border-radius: 10px; margin-top: 15px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
                     <p style="color: #333; margin: 0;">
-                        <strong>📌 순서:</strong> 코드 복사 → 즐겨찾기 추가 → 트위터 페이지 이동 → 즐겨찾기 터치 → 자동 스크롤 → 처리!
+                        <strong>🖱️ 사용법:</strong> 드래그 링크를 북마크바로 드래그 → 트위터에서 북마크 클릭 → 자동 처리!
                     </p>
                 </div>
             </div>
         </div>
         
         <div class="card">
-            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">🎯 자동 스크롤 기능 <span class="autoscroll-badge">NEW</span></h2>
+            <h2 style="text-align: center; margin-bottom: 30px; color: #2c3e50;">🎯 PC 전용 자동 스크롤 기능 <span class="autoscroll-badge">PC ONLY</span></h2>
             
             <div class="function-grid">
                 <div class="function-box tweets-delete">
@@ -464,7 +479,7 @@ javascript:(()=>{alert("🗑️ 트윗 삭제 + 자동 스크롤 시작!");let s
                         </div>
                         
                         <button class="copy-btn" onclick="copyCode('tweetsCode', this)">
-                            📋 또는 코드 복사하기
+                            📋 코드 복사 (PC 백업용)
                         </button>
                     </div>
                 </div>
@@ -489,7 +504,7 @@ javascript:(()=>{alert("❤️ 좋아요 취소 + 자동 스크롤 시작!");let
                         </div>
                         
                         <button class="copy-btn" onclick="copyCode('likesCode', this)">
-                            📋 또는 코드 복사하기
+                            📋 코드 복사 (PC 백업용)
                         </button>
                     </div>
                 </div>
@@ -514,7 +529,7 @@ javascript:(()=>{alert("🔄 리트윗 취소 + 자동 스크롤 시작!");let s
                         </div>
                         
                         <button class="copy-btn" onclick="copyCode('retweetsCode', this)">
-                            📋 또는 코드 복사하기
+                            📋 코드 복사 (PC 백업용)
                         </button>
                     </div>
                 </div>
@@ -539,7 +554,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
                         </div>
                         
                         <button class="copy-btn" onclick="copyCode('quotesCode', this)">
-                            📋 또는 코드 복사하기
+                            📋 코드 복사 (PC 백업용)
                         </button>
                     </div>
                 </div>
@@ -547,8 +562,41 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
         </div>
         
         <div class="card">
+            <h2 style="color: #ff9800; margin-bottom: 20px;">📱 모바일 사용자를 위한 대안</h2>
+            
+            <div class="feature-grid" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px;">
+                <div style="background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%); padding: 20px; border-radius: 12px; border: 2px solid #2196f3;">
+                    <h3 style="color: #1976d2; margin-bottom: 10px;">📱 TweetDelete</h3>
+                    <p style="color: #333; font-size: 0.9em; margin-bottom: 10px;">3200개까지 무료로 트윗 삭제</p>
+                    <a href="https://tweetdelete.net" target="_blank" style="display: inline-block; background: #2196f3; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.85em;">사이트 방문</a>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #e8f5e8 0%, #c8e6c9 100%); padding: 20px; border-radius: 12px; border: 2px solid #4caf50;">
+                    <h3 style="color: #2e7d32; margin-bottom: 10px;">🔄 Circleboom</h3>
+                    <p style="color: #333; font-size: 0.9em; margin-bottom: 10px;">트위터 관리 올인원 도구</p>
+                    <a href="https://circleboom.com" target="_blank" style="display: inline-block; background: #4caf50; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.85em;">사이트 방문</a>
+                </div>
+                
+                <div style="background: linear-gradient(135deg, #fff3e0 0%, #ffcc02 100%); padding: 20px; border-radius: 12px; border: 2px solid #ff9800;">
+                    <h3 style="color: #ef6c00; margin-bottom: 10px;">🗂️ Archive Eraser</h3>
+                    <p style="color: #333; font-size: 0.9em; margin-bottom: 10px;">트위터 아카이브 기반 삭제</p>
+                    <a href="https://github.com/koenrh/delete-tweets" target="_blank" style="display: inline-block; background: #ff9800; color: white; padding: 8px 15px; border-radius: 20px; text-decoration: none; font-size: 0.85em;">GitHub 방문</a>
+                </div>
+            </div>
+            
+            <div style="background: #f5f5f5; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #ff9800;">
+                <h4 style="color: #ef6c00; margin-bottom: 10px;">💡 모바일 사용 팁</h4>
+                <ul style="margin-left: 20px; color: #666;">
+                    <li><strong>PC 원격 접속:</strong> TeamViewer나 Chrome Remote Desktop으로 PC에 접속해서 이 사이트 사용</li>
+                    <li><strong>데스크톱 모드:</strong> 모바일 브라우저에서 "데스크톱 사이트 요청" 활성화 (제한적)</li>
+                    <li><strong>기존 앱 활용:</strong> 위의 추천 앱들을 모바일에서 직접 사용</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="card">
             <div class="instructions">
-                <h3>🔄 자동 스크롤 기능 설명</h3>
+                <h3>💻 PC에서 사용하는 방법 (추천)</h3>
                 
                 <div class="steps">
                     <div class="step">
@@ -599,18 +647,18 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
         </div>
         
         <div class="tips">
-            <h3>💡 자동 스크롤 버전 팁</h3>
+            <h3>💡 PC 전용 사용 팁</h3>
             
             <div class="tip-item">
-                <strong>📌 드래그 앤 드롭:</strong> 각 기능에 있는 "📌 북마크바로 드래그하기" 링크를 마우스로 드래그해서 북마크바에 놓으면 자동으로 북마크가 생성됩니다! (데스크톱 전용)
+                <strong>🖱️ 드래그 앤 드롭:</strong> 각 기능에 있는 "📌 북마크바로 드래그하기" 링크를 마우스로 드래그해서 북마크바에 놓으면 자동으로 북마크가 생성됩니다!
             </div>
             
             <div class="tip-item">
-                <strong>📱 모바일 사용:</strong> 모바일에서는 드래그 기능이 제한적이므로, "📋 또는 코드 복사하기" 버튼을 사용해서 수동으로 북마크를 만드세요.
+                <strong>⌨️ 키보드 단축키:</strong> Ctrl+Shift+C로 첫 번째 코드 복사, Ctrl+Shift+S로 스크롤 시뮬레이션 가능합니다.
             </div>
             
             <div class="tip-item">
-                <strong>📍 충분한 시간 확보:</strong> 스크롤 단계에서 75초 정도 기다려야 합니다. 중간에 다른 작업을 하지 마세요.
+                <strong>📊 대용량 처리:</strong> PC에서는 수천 개의 트윗도 안정적으로 처리할 수 있습니다. 75초 스크롤 후 자동 처리를 기다리세요.
             </div>
             
             <div class="tip-item">
@@ -622,11 +670,11 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
             </div>
             
             <div class="tip-item">
-                <strong>🌐 안정적인 네트워크:</strong> WiFi 환경에서 사용하시고, 네트워크가 불안정하면 중단될 수 있습니다.
+                <strong>🌐 안정적인 네트워크:</strong> PC의 유선 인터넷이나 안정적인 WiFi에서 사용하시면 중단 없이 처리됩니다.
             </div>
             
             <div class="tip-item">
-                <strong>📱 모바일 최적화:</strong> 이 버전은 모바일에서도 잘 작동하도록 최적화되었습니다.
+                <strong>🖥️ 멀티 모니터:</strong> 한 화면에서 트위터를 열고 다른 화면에서 작업하며 진행상황을 모니터링할 수 있습니다.
             </div>
         </div>
         
@@ -642,7 +690,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
         </div>
         
         <div id="status" class="status info">
-            🚀 자동 스크롤 버전으로 더 많은 컨텐츠를 효율적으로 처리하세요!
+            💻 PC에서 드래그 앤 드롭으로 쉽게 북마크를 만들어보세요!
         </div>
     </div>
 
@@ -687,7 +735,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
             if (navigator.clipboard) {
                 navigator.clipboard.writeText(code).then(() => {
                     showCopySuccess(buttonElement);
-                    updateStatus('✅ 자동 스크롤 북마클릿 코드가 복사되었습니다! 북마크로 저장하세요.', 'success');
+                    updateStatus('✅ PC 전용 북마클릿 코드가 복사되었습니다! 북마크로 저장하세요.', 'success');
                 }).catch(err => {
                     console.error('복사 실패:', err);
                     fallbackCopy(code, buttonElement);
@@ -727,7 +775,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
             try {
                 document.execCommand('copy');
                 showCopySuccess(buttonElement);
-                updateStatus('✅ 자동 스크롤 북마클릿 코드가 복사되었습니다!', 'success');
+                updateStatus('✅ PC 전용 북마클릿 코드가 복사되었습니다!', 'success');
             } catch (err) {
                 updateStatus('❌ 복사에 실패했습니다. 코드를 수동으로 선택해서 복사해주세요.', 'error');
             }
@@ -745,7 +793,7 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
             setTimeout(() => {
                 if (status.className.includes(type)) {
                     status.className = 'status info';
-                    status.textContent = '🚀 자동 스크롤 버전으로 더 많은 컨텐츠를 효율적으로 처리하세요!';
+                    status.textContent = '💻 PC에서 드래그 앤 드롭으로 쉽게 북마크를 만들어보세요!';
                 }
             }, 5000);
         }
@@ -756,24 +804,30 @@ javascript:(()=>{alert("💬 인용트윗 삭제 + 자동 스크롤 시작!");le
             const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
             
             if (isMobile) {
-                updateStatus('📱 모바일에서 접속하셨네요! 자동 스크롤 버전이 모바일에 최적화되었습니다.', 'success');
+                updateStatus('📱 모바일에서 접속하셨습니다. 위의 대안 앱들을 이용해주세요!', 'info');
+                
+                // 모바일에서는 PC 전용 섹션 숨기기
+                const desktopOnly = document.getElementById('desktopOnly');
+                if (desktopOnly) {
+                    desktopOnly.style.display = 'block'; // 대안 안내는 보여주기
+                }
             } else {
-                updateStatus('💻 데스크톱에서 접속하셨습니다. 자동 스크롤 기능을 활용해보세요!', 'info');
+                updateStatus('💻 PC에서 접속하셨습니다. 드래그 앤 드롭 기능을 활용해보세요!', 'success');
             }
 
             // PWA 설치 상태 확인
             if (window.matchMedia('(display-mode: standalone)').matches) {
-                updateStatus('🎉 PWA 모드로 실행 중입니다! 자동 스크롤 기능을 사용해보세요.', 'success');
+                updateStatus('🎉 PWA 모드로 실행 중입니다! PC에서 최고의 성능을 발휘합니다.', 'success');
             }
         });
 
         // 온라인/오프라인 상태 감지
         window.addEventListener('online', () => {
-            updateStatus('🟢 온라인 상태입니다. 자동 스크롤 기능을 사용할 수 있습니다.', 'success');
+            updateStatus('🟢 온라인 상태입니다. PC에서 모든 기능을 사용할 수 있습니다.', 'success');
         });
 
         window.addEventListener('offline', () => {
-            updateStatus('🔴 오프라인 상태입니다. 인터넷에 연결 후 사용하세요.', 'error');
+            updateStatus('🔴 오프라인 상태입니다. PC에서 인터넷에 연결 후 사용하세요.', 'error');
         });
 
         // 에러 처리
