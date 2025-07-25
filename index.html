@@ -392,16 +392,119 @@
             <div class="function-card">
                 <div class="function-header">
                     <span class="function-icon">📎</span>
-                    <h3 class="function-title">인용트윗 삭제</h3>
+                    <h3 class="function-title">인용 트윗 삭제 + 내 트윗 삭제 + 리트윗 취소</h3>
                 </div>
-                <p class="function-desc">모든 인용트윗을 최신부터 순서대로 삭제합니다</p>
+                <p class="function-desc">최신부터 순서대로 삭제합니다</p>
+                <p class="function-desc">👉 하나씩 순차 처리, 👉 300~500ms 사이 동작, 👉 10개마다 2.5초 쉬기</p>
                 <p class="function-page">📍 실행 페이지: twitter.com/사용자명</p>
                 <div class="code-box">
                     <div class="code-header">
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code3')">복사</button>
                     </div>
-                    <div class="code-area" id="code3">여기에 코드를 입력하세요</div>
+                    <div class="code-area" id="code3">
+                        
+                       (async () => {
+  const myUsername = location.pathname.split("/")[1]; // 자동으로 본인 ID 인식
+  let cleaned = 0;
+  const actionDelay = 400; // 300~500ms 중간값
+  const scrollDelay = 500;
+  const restEvery = 10;
+  const restTime = 4000;
+
+  const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  const isQuotedRetweet = (tweet) => {
+    return tweet.querySelector('article div[data-testid="tweetText"] + div a[href*="/status/"]');
+  };
+
+  const isMyTweet = (tweet) => {
+    const userLink = tweet.querySelector('a[href^="/"][role="link"]');
+    return userLink && userLink.getAttribute("href").includes(`/${myUsername}`);
+  };
+
+  const isRepost = (tweet) => {
+    return tweet.querySelector('button[data-testid="unretweet"]');
+  };
+
+  const scrollDown = () => {
+    window.scrollBy({ top: 500, behavior: "smooth" });
+  };
+
+  const cleanNextTweet = async () => {
+    const tweets = document.querySelectorAll('article:has([data-testid="caret"], [data-testid="unretweet"])');
+    for (let tweet of tweets) {
+      tweet.scrollIntoView({ behavior: "smooth", block: "center" });
+      await sleep(actionDelay);
+
+      const isQT = isQuotedRetweet(tweet);
+      const isMine = isMyTweet(tweet);
+      const isRT = isRepost(tweet);
+
+      // 1. 삭제 (내 트윗 or 인용 트윗)
+      if (isQT || isMine) {
+        const caretBtn = tweet.querySelector('button[data-testid="caret"]');
+        if (!caretBtn) continue;
+        caretBtn.click();
+        await sleep(actionDelay);
+
+        const menuItems = Array.from(document.querySelectorAll('div[role="menuitem"]'));
+        const deleteBtn = menuItems.find(el => el.textContent.includes("Delete"));
+        if (deleteBtn) {
+          deleteBtn.click();
+          await sleep(actionDelay);
+          const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
+          if (confirmBtn) {
+            confirmBtn.click();
+            console.log(`🗑️ 트윗 삭제 완료 (${++cleaned})`);
+            await sleep(scrollDelay);
+            return true;
+          }
+        }
+      }
+
+      // 2. 리트윗 취소
+      if (isRT) {
+        const undoBtn = tweet.querySelector('button[data-testid="unretweet"]');
+        if (undoBtn) {
+          undoBtn.click();
+          await sleep(actionDelay);
+          const undoConfirm = document.querySelector('[data-testid="unretweetConfirm"]');
+          if (undoConfirm) {
+            undoConfirm.click();
+            console.log(`↩️ 리트윗 취소 완료 (${++cleaned})`);
+            await sleep(scrollDelay);
+            return true;
+          }
+        }
+      }
+
+      console.log(`⚠️ 삭제도 리트윗도 아님, 건너뜀`);
+      await sleep(scrollDelay);
+    }
+
+    return false; // 더 이상 삭제할 트윗 없음
+  };
+
+  const cleanAll = async () => {
+    while (true) {
+      const didClean = await cleanNextTweet();
+      if (!didClean) {
+        scrollDown();
+        await sleep(1000); // 스크롤로 새 트윗 로드 기다리기
+      }
+
+      if (cleaned > 0 && cleaned % restEvery === 0) {
+        console.log("⏸️ 잠깐 휴식!");
+        await sleep(restTime);
+      }
+    }
+  };
+
+  cleanAll();
+})();
+                    
+                    </div>
                 </div>
             </div>
 
