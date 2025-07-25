@@ -316,33 +316,11 @@
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code1')">복사</button>
                     </div>
-                    <div class="code-area" id="code1">(async function() {
-    console.log("❤️ 좋아요 취소 시작");
-    if (!confirm("좋아요를 취소하시겠습니까?")) return;
-    
-    window.scrollTo({top: 0, behavior: "smooth"});
-    await new Promise(r => setTimeout(r, 2000));
-    
-    let count = 0;
-    for (let i = 0; i < 50; i++) {
-        const buttons = document.querySelectorAll('[data-testid="unlike"]');
-        if (buttons.length > 0) {
-            for (const btn of buttons) {
-                if (btn && btn.offsetParent) {
-                    btn.click();
-                    count++;
-                    console.log(`💔 완료: ${count}개`);
-                    await new Promise(r => setTimeout(r, 500));
-                }
-            }
-        }
-        window.scrollBy(0, window.innerHeight * 0.8);
-        await new Promise(r => setTimeout(r, 2000));
+                    <div class="code-area" id="code1">
+                        
+                        ❤️ 좋아요 취소 시작
         
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) break;
-    }
-    alert(`🎉 완료! ${count}개 취소됨`);
-})();</div>
+                    </div>
                 </div>
             </div>
 
