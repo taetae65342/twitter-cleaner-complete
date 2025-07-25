@@ -318,7 +318,52 @@
                     </div>
                     <div class="code-area" id="code1">
                         
-                        ❤️ 좋아요 취소 시작
+                       (async function() {
+    console.log("❤️ 좋아요 취소 시작");
+    if (!confirm("좋아요를 전부 취소하시겠습니까?")) return;
+
+    const delay = (ms) => new Promise(res => setTimeout(res, ms));
+    let totalUnliked = 0;
+    let scrollTries = 0;
+    const maxScrollStuck = 5;
+
+    async function unlikeVisible() {
+        const buttons = document.querySelectorAll('[data-testid="unlike"]');
+        if (buttons.length === 0) return false;
+        for (const btn of buttons) {
+            if (btn && btn.offsetParent) {
+                btn.click();
+                totalUnliked++;
+                console.log(`💔 좋아요 취소됨: ${totalUnliked}개`);
+                await delay(400); // 속도 조절
+            }
+        }
+        return true;
+    }
+
+    async function scrollAndWait() {
+        window.scrollBy(0, window.innerHeight * 0.8);
+        await delay(1500); // 새 트윗 로딩 대기
+    }
+
+    while (true) {
+        const found = await unlikeVisible();
+        await scrollAndWait();
+
+        // 끝까지 내렸는데 더 이상 트윗이 안 나올 때
+        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) {
+            scrollTries++;
+        } else {
+            scrollTries = 0;
+        }
+
+        if (scrollTries >= maxScrollStuck) {
+            break;
+        }
+    }
+
+    alert(`🎉 좋아요 ${totalUnliked}개 모두 취소 완료!`);
+})();
         
                     </div>
                 </div>
