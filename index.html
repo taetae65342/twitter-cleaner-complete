@@ -496,6 +496,76 @@
                 대량 작업으로 인해 일시적으로 계정이 제한될 수 있습니다.
             </div>
         </div>
+
+<div style="background: #1a1a1a; border: 1px solid #2f2f2f; border-radius: 8px; padding: 30px; margin-top: 40px;">
+            <h3 style="color: #60a5fa; margin-bottom: 20px; text-align: center;">💬 댓글 & 수정사항 제안</h3>
+            
+            <!-- 댓글 작성 -->
+            <div style="margin-bottom: 30px;">
+                <input type="text" id="username" placeholder="닉네임" style="width: 100%; padding: 10px; margin-bottom: 10px; background: #0a0a0a; border: 1px solid #2f2f2f; border-radius: 5px; color: #e1e8ed;">
+                <textarea id="comment" placeholder="댓글이나 수정사항을 입력해주세요..." style="width: 100%; height: 100px; padding: 10px; background: #0a0a0a; border: 1px solid #2f2f2f; border-radius: 5px; color: #e1e8ed; resize: vertical;"></textarea>
+                <button onclick="addComment()" style="background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">댓글 작성</button>
+            </div>
+            
+            <!-- 댓글 목록 -->
+            <div id="comments-list">
+                <!-- 댓글들이 여기에 표시됩니다 -->
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 기존 스크립트 함수들...
+
+        // 댓글 시스템 추가
+        let comments = [];
+
+        function addComment() {
+            const username = document.getElementById('username').value;
+            const comment = document.getElementById('comment').value;
+            
+            if (!username || !comment) {
+                alert('닉네임과 댓글을 모두 입력해주세요!');
+                return;
+            }
+            
+            const newComment = {
+                username: username,
+                comment: comment,
+                timestamp: new Date().toLocaleString('ko-KR')
+            };
+            
+            comments.unshift(newComment);
+            displayComments();
+            
+            document.getElementById('comment').value = '';
+        }
+
+        function displayComments() {
+            const commentsList = document.getElementById('comments-list');
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<p style="color: #8b98a5; text-align: center;">아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>';
+                return;
+            }
+            
+            commentsList.innerHTML = comments.map(comment => `
+                <div style="background: #0d1117; border: 1px solid #2a2a2a; border-radius: 5px; padding: 15px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <strong style="color: #4ade80;">${comment.username}</strong>
+                        <span style="color: #6b7280; font-size: 0.9rem;">${comment.timestamp}</span>
+                    </div>
+                    <p style="color: #e1e8ed; margin: 0; line-height: 1.5;">${comment.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        displayComments();
+    </script>
+</body>
+</html>
+        
     </div>
 
     <script>
