@@ -284,25 +284,24 @@
             </ol>
         </div>
 
- <div class="environment">
-    <h3 style="text-align: center;">🖥️ 필독</h3>
-    <div style="text-align: center;">
-        <p><strong>권장:</strong> 크롬 브라우저 + PC만 가능</p>
-        <p><strong>멈추기:</strong> 새로고침 또는 창 나가기</p>
-    </div>
-</div>
+        <div class="environment">
+            <h3 style="text-align: center;">🖥️ 필독</h3>
+            <div style="text-align: center;">
+                <p><strong>권장:</strong> 크롬 브라우저 + PC만 가능</p>
+                <p><strong>멈추기:</strong> 새로고침 또는 창 나가기</p>
+            </div>
+        </div>
 
-<div style="background: #0a1f0a; border: 1px solid #22c55e; border-radius: 8px; padding: 18px; margin-bottom: 40px;">
-    <h3 style="text-align: center; color: #4ade80; margin-bottom: 10px;">📌 Warning이 뜰때</h3>
-    <div style="text-align: center; margin: 15px 0;">
-        <img src="https://i.imgur.com/Da8Bi4j.jpeg" alt="트위터 청소기 이미지" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #22c55e;">
-    </div>
-    <div style="text-align: center;">
-        <p style="color: #86efac; margin: 0;"><strong>해결법:</strong> allow pasting 입력 후 엔터</p>
-    </div>
-</div>
+        <div style="background: #0a1f0a; border: 1px solid #22c55e; border-radius: 8px; padding: 18px; margin-bottom: 40px;">
+            <h3 style="text-align: center; color: #4ade80; margin-bottom: 10px;">📌 Warning이 뜰때</h3>
+            <div style="text-align: center; margin: 15px 0;">
+                <img src="https://i.imgur.com/Da8Bi4j.jpeg" alt="트위터 청소기 이미지" style="max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #22c55e;">
+            </div>
+            <div style="text-align: center;">
+                <p style="color: #86efac; margin: 0;"><strong>해결법:</strong> allow pasting 입력 후 엔터</p>
+            </div>
+        </div>
 
-    
         <div class="functions">
             <div class="function-card">
                 <div class="function-header">
@@ -316,9 +315,7 @@
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code1')">복사</button>
                     </div>
-                    <div class="code-area" id="code1">
-                        
-(async function() {
+                    <div class="code-area" id="code1">(async function() {
     console.log("❤️ 좋아요 취소 시작 (사용자 클릭 시뮬레이션)");
     if (!confirm("좋아요를 전부 취소하시겠습니까?")) return;
 
@@ -371,8 +368,7 @@
     }
 
     alert(`🎉 좋아요 ${totalUnliked}개 모두 취소 완료!`);
-})();
-                    </div>
+})();</div>
                 </div>
             </div>
 
@@ -497,67 +493,18 @@
             </div>
         </div>
 
-// 댓글 시스템 (localStorage 사용)
-let comments = JSON.parse(localStorage.getItem('twitterCleanerComments')) || [];
-
-function addComment() {
-    const username = document.getElementById('username').value.trim();
-    const comment = document.getElementById('comment').value.trim();
-    
-    if (!username || !comment) {
-        alert('닉네임과 댓글을 모두 입력해주세요!');
-        return;
-    }
-    
-    const newComment = {
-        id: Date.now(), // 고유 ID
-        username: username,
-        comment: comment,
-        timestamp: new Date().toLocaleString('ko-KR')
-    };
-    
-    comments.unshift(newComment);
-    localStorage.setItem('twitterCleanerComments', JSON.stringify(comments));
-    displayComments();
-    
-    // 입력창 초기화
-    document.getElementById('comment').value = '';
-    document.getElementById('username').value = '';
-}
-
-function deleteComment(id) {
-    if (confirm('댓글을 삭제하시겠습니까?')) {
-        comments = comments.filter(comment => comment.id !== id);
-        localStorage.setItem('twitterCleanerComments', JSON.stringify(comments));
-        displayComments();
-    }
-}
-
-function displayComments() {
-    const commentsList = document.getElementById('comments-list');
-    
-    if (comments.length === 0) {
-        commentsList.innerHTML = '<p style="color: #8b98a5; text-align: center;">아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>';
-        return;
-    }
-    
-    commentsList.innerHTML = comments.map(comment => `
-        <div style="background: #0d1117; border: 1px solid #2a2a2a; border-radius: 5px; padding: 15px; margin-bottom: 10px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                <strong style="color: #4ade80;">${comment.username}</strong>
-                <div>
-                    <span style="color: #6b7280; font-size: 0.9rem; margin-right: 10px;">${comment.timestamp}</span>
-                    <button onclick="deleteComment(${comment.id})" style="background: #dc2626; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">삭제</button>
-                </div>
+        <div style="background: #1a1a1a; border: 1px solid #2f2f2f; border-radius: 8px; padding: 30px; margin-top: 40px;">
+            <h3 style="color: #60a5fa; margin-bottom: 20px; text-align: center;">💬 댓글 & 수정사항 제안</h3>
+            
+            <div style="margin-bottom: 30px;">
+                <input type="text" id="username" placeholder="닉네임" style="width: 100%; padding: 10px; margin-bottom: 10px; background: #0a0a0a; border: 1px solid #2f2f2f; border-radius: 5px; color: #e1e8ed;">
+                <textarea id="comment" placeholder="댓글이나 수정사항을 입력해주세요..." style="width: 100%; height: 100px; padding: 10px; background: #0a0a0a; border: 1px solid #2f2f2f; border-radius: 5px; color: #e1e8ed; resize: vertical;"></textarea>
+                <button onclick="addComment()" style="background: #238636; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-top: 10px;">댓글 작성</button>
             </div>
-            <p style="color: #e1e8ed; margin: 0; line-height: 1.5;">${comment.comment}</p>
+            
+            <div id="comments-list"></div>
         </div>
-    `).join('');
-}
 
-// 페이지 로드시 저장된 댓글 표시
-displayComments();
-        
     </div>
 
     <script>
@@ -618,6 +565,66 @@ displayComments();
                 }
             }
         }
+
+        // 댓글 시스템 (localStorage 사용)
+        let comments = JSON.parse(localStorage.getItem('twitterCleanerComments')) || [];
+
+        function addComment() {
+            const username = document.getElementById('username').value.trim();
+            const comment = document.getElementById('comment').value.trim();
+            
+            if (!username || !comment) {
+                alert('닉네임과 댓글을 모두 입력해주세요!');
+                return;
+            }
+            
+            const newComment = {
+                id: Date.now(),
+                username: username,
+                comment: comment,
+                timestamp: new Date().toLocaleString('ko-KR')
+            };
+            
+            comments.unshift(newComment);
+            localStorage.setItem('twitterCleanerComments', JSON.stringify(comments));
+            displayComments();
+            
+            document.getElementById('comment').value = '';
+            document.getElementById('username').value = '';
+        }
+
+        function deleteComment(id) {
+            if (confirm('댓글을 삭제하시겠습니까?')) {
+                comments = comments.filter(comment => comment.id !== id);
+                localStorage.setItem('twitterCleanerComments', JSON.stringify(comments));
+                displayComments();
+            }
+        }
+
+        function displayComments() {
+            const commentsList = document.getElementById('comments-list');
+            
+            if (comments.length === 0) {
+                commentsList.innerHTML = '<p style="color: #8b98a5; text-align: center;">아직 댓글이 없습니다. 첫 번째 댓글을 작성해보세요!</p>';
+                return;
+            }
+            
+            commentsList.innerHTML = comments.map(comment => `
+                <div style="background: #0d1117; border: 1px solid #2a2a2a; border-radius: 5px; padding: 15px; margin-bottom: 10px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <strong style="color: #4ade80;">${comment.username}</strong>
+                        <div>
+                            <span style="color: #6b7280; font-size: 0.9rem; margin-right: 10px;">${comment.timestamp}</span>
+                            <button onclick="deleteComment(${comment.id})" style="background: #dc2626; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.8rem; cursor: pointer;">삭제</button>
+                        </div>
+                    </div>
+                    <p style="color: #e1e8ed; margin: 0; line-height: 1.5;">${comment.comment}</p>
+                </div>
+            `).join('');
+        }
+
+        // 페이지 로드시 저장된 댓글 표시
+        displayComments();
     </script>
 </body>
 </html>
