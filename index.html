@@ -536,55 +536,11 @@
                         <span class="code-label">JavaScript Code</span>
                         <button class="copy-button" onclick="copyCode(this, 'code5')">복사</button>
                     </div>
-                    <div class="code-area" id="code5">(async function() {
-    console.log("🗑️ 내 트윗 삭제 시작");
-    if (!confirm("내 트윗을 삭제하시겠습니까?")) return;
-    
-    window.scrollTo({top: 0, behavior: "smooth"});
-    await new Promise(r => setTimeout(r, 2000));
-    
-    let count = 0;
-    for (let i = 0; i < 50; i++) {
-        const tweets = Array.from(document.querySelectorAll('[data-testid="tweet"]')).filter(t => {
-            const isRetweet = t.querySelector('[data-testid="socialContext"]');
-            const isQuote = t.querySelector('[data-testid="quoteTweet"]');
-            return !isRetweet && !isQuote && t.offsetParent;
-        });
-        
-        for (const tweet of tweets) {
-            try {
-                const moreBtn = tweet.querySelector('[aria-label="더보기"]');
-                if (moreBtn) {
-                    moreBtn.click();
-                    await new Promise(r => setTimeout(r, 800));
-                    
-                    const deleteBtn = [...document.querySelectorAll('[role="menuitem"]')]
-                        .find(b => b.textContent.includes("삭제"));
-                    if (deleteBtn) {
-                        deleteBtn.click();
-                        await new Promise(r => setTimeout(r, 800));
+                    <div class="code-area" id="code5">
+
+여기에 코드를 입력하세요
                         
-                        const confirmBtn = document.querySelector('[data-testid="confirmationSheetConfirm"]');
-                        if (confirmBtn) {
-                            confirmBtn.click();
-                            count++;
-                            console.log(`🗑️ 완료: ${count}개`);
-                            await new Promise(r => setTimeout(r, 1000));
-                        }
-                    }
-                }
-            } catch (e) {
-                console.error("오류:", e);
-            }
-        }
-        
-        window.scrollBy(0, window.innerHeight * 0.8);
-        await new Promise(r => setTimeout(r, 3500));
-        
-        if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 100) break;
-    }
-    alert(`🎉 완료! ${count}개 삭제됨`);
-})();</div>
+                    </div>
                 </div>
             </div>
         </div>
